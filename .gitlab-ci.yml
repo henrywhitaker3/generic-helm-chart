@@ -11,7 +11,7 @@ package:
   image: dtzar/helm-kubectl
   extends: .rules
   script:
-    - helm package generic
+    - helm package chart
   artifacts:
     paths:
       - generic-*.tgz
