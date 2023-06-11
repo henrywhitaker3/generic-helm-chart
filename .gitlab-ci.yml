@@ -1,0 +1,32 @@
+stages:
+  - package
+  - release
+
+.rules:
+  rules:
+    - if: $CI_COMMIT_TAG =~ "/^v[0-9]+[.][0-9]+[.][0-9]+$/"
+
+package:
+  stage: package
+  image: dtzar/helm-kubectl
+  extends: .rules
+  script:
+    - helm package generic
+  artifacts:
+    paths:
+      - generic-*.tgz
+    expire_in: "1 days"
+
+release:
+  stage: release
+  image: curlimages/curl
+  extends: .rules
+  dependencies:
+    - package
+  script:
+    - package=$(ls generic-*.tgz)
+    - |
+      curl --request POST \
+        --user gitlab-ci-token:$CI_JOB_TOKEN \
+        --form "chart=@${package}" \
+        "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/stable/charts"

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "generic.fullname" . }}
+  labels:
+    {{- include "generic.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.portName }}
+      protocol: TCP
+      name: {{ .Values.service.portName }}
+    {{- if (gt (len .Values.service.additionalPorts) 0) }}
+    {{ .Values.service.additionalPorts | toYaml | nindent 4 }}
+    {{- end }}
+  selector:
+    {{- include "generic.selectorLabels" . | nindent 4 }}

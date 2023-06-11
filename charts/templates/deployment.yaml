@@ -1,0 +1,139 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "generic.fullname" . }}
+  labels:
+    {{- include "generic.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    {{- .Values.deploymentStrategy | toYaml | nindent 4}}
+  selector:
+    matchLabels:
+      {{- include "generic.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        {{- include "generic.checksums" . | nindent 8 }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "generic.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- if or (.Values.pvc.enabled) (gt (len .Values.volumes) 0) (.Values.vpn.enabled) }}
+      volumes:
+        {{- if .Values.pvc.enabled }}
+        - name: persistence
+          persistentVolumeClaim:
+            claimName: {{ include "generic.fullname" . }}
+        {{- end }}
+        {{- if gt (len .Values.volumes) 0 }}
+        {{- .Values.volumes | toYaml | nindent 8 }}
+        {{- end }}
+        {{- if .Values.vpn.enabled }}
+        - name: modules
+          hostPath:
+            path: /lib/modules
+        {{- if .Values.vpn.secret.mount.enabled }}
+        - name: wg-config
+          secret:
+            secretName: {{ include "generic.fullname" . }}-wireguard
+            optional: false
+        {{- end }}
+        {{- end }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "generic.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "generic.fullname" . }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: {{ .Values.service.portName }}
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+            {{- if (gt (len .Values.additionalPorts) 0) }}
+            {{ .Values.additionalPorts | toYaml | nindent 12 }}
+            {{- end }}
+          livenessProbe:
+            {{- include "generic.probes" . | nindent 12 }}
+          readinessProbe:
+            {{- include "generic.probes" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- if or (.Values.pvc.enabled) (gt (len .Values.volumeMounts) 0) }}
+          volumeMounts:
+            {{- if .Values.pvc.enabled }}
+            - mountPath: {{ .Values.pvc.mountPath }}
+              name: persistence
+            {{- end }}
+            {{- if gt (len .Values.volumeMounts) 0 }}
+            {{- .Values.volumeMounts | toYaml | nindent 12 }}
+            {{- end }}
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "generic.fullname" . }}
+            {{- if ne (.Values.secrets) ("") }}
+            - secretRef:
+                name: {{ include "generic.fullname" . }}
+            {{- end }}
+        {{- if .Values.vpn.enabled }}
+        - name: wireguard
+          image: "{{ .Values.vpn.image.repository }}:{{ .Values.vpn.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.vpn.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.vpn.securityContext | nindent 12 }}
+          livenessProbe:
+            exec:
+              command:
+                - ping
+                - -W
+                - "1"
+                - -c
+                - "3"
+                - "8.8.8.8"
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - ping
+                - -W
+                - "1"
+                - -c
+                - "3"
+                - "8.8.8.8"
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+          volumeMounts:
+            {{- if .Values.vpn.secret.mount.enabled }}
+            - name: wg-config
+              mountPath: {{ .Values.vpn.secret.mount.path }}
+              readOnly: true
+            {{- end }}
+            - mountPath: /lib/modules
+              name: modules
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

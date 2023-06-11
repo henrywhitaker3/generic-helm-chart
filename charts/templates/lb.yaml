@@ -1,0 +1,24 @@
+{{- if .Values.service.loadBalancer.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "generic.fullname" . }}-lb
+  labels:
+    {{- include "generic.labels" . | nindent 4 }}
+spec:
+  type: LoadBalancer
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.portName }}
+      protocol: TCP
+      name: {{ .Values.service.portName }}
+    {{- if (gt (len .Values.service.additionalPorts) 0) }}
+    {{ .Values.service.additionalPorts | toYaml | nindent 4 }}
+    {{- end }}
+  selector:
+    {{- include "generic.selectorLabels" . | nindent 4 }}
+  {{- if ne .Values.service.loadBalancer.ip "" }}
+  loadBalancerIP: {{ .Values.service.loadBalancer.ip | quote }}
+  {{- end }}
+  externalTrafficPolicy: {{ .Values.service.loadBalancer.externalTrafficPolicy }}
+{{- end }}
