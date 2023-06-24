@@ -43,6 +43,10 @@ spec:
         {{- end }}
         {{- end }}
       {{- end }}
+      {{-  if gt (len .Values.initContainers) 0 }}
+      initContainers:
+        {{- .Values.initContainers | toYaml | nindent 8 }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -86,6 +90,9 @@ spec:
             - secretRef:
                 name: {{ include "generic.fullname" . }}
             {{- end }}
+        {{- if gt (len .Values.extraContainers) 0 }}
+        {{ .Values.extraContainers | toYaml | nindent 8 }}
+        {{- end }}
         {{- if .Values.vpn.enabled }}
         - name: wireguard
           image: "{{ .Values.vpn.image.repository }}:{{ .Values.vpn.image.tag | default .Chart.AppVersion }}"
