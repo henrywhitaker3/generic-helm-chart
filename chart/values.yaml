@@ -141,7 +141,10 @@ vpn:
   secret:
     enabled: true
 
-    path: ""
+    secretStoreRef:
+      kind: ClusterSecretStore
+      name: onepassword-connect
+    key: ""
 
     mount:
       enabled: true
