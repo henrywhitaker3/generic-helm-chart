@@ -108,7 +108,12 @@ pvc:
 config: {}
 
 # The 1password path for secrets
-secrets: ""
+secrets:
+  enabled: false
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  key: ""
 
 volumes: []
 
