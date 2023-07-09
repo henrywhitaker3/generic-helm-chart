@@ -1,0 +1,27 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Push chart
+        uses: appany/helm-oci-chart-releaser@v0.3.0
+        with:
+          name: generic-helm-chart
+          repository: henrywhitaker3
+          tag: ${{ github.ref_name }}
+          path: chart
+          registry: ghcr.io
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
+          update_dependencies: 'true'
