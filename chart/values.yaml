@@ -155,6 +155,9 @@ initContainers: []
 # Specify any extra container in the pod
 extraContainers: []
 
+# Specify any jobs to deploy
+jobs: []
+
 vpn:
   # Specify whether to enable a VPN sidecar
   enabled: false

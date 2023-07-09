@@ -1,0 +1,27 @@
+{{- $values := .Values -}}
+{{- range $job := .Values.jobs }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $job.name }}
+spec:
+  template:
+    spec:
+      containers:
+      {{- range $container := $job.containers }}
+        - name: {{ $container.name }}
+          image: {{ $container.image }}
+          command: 
+            {{- $container.command | toYaml | nindent 12 }}
+          {{- if $container.env }}
+          env:
+            {{- $container.env | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if and ($container.envFrom) (gt 0 (len $container.envFrom)) }}
+          envFrom:
+            {{- $container.envFrom | toYaml | nindent 12 }}
+          {{- end }}
+      {{- end }}
+      restartPolicy: {{ default "Never" $job.restartPolicy }}
+  backoffLimit: {{  default 3 $job.backoffLimit }}
+{{- end }}
