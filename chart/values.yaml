@@ -36,18 +36,30 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
+  # Specifies the type of the service
   type: ClusterIP
+  # Specifies the port of the service
   port: 80
+  # Specifies the name of the port
   portName: http
 
+  # Specify any additional ports for the service
   additionalPorts: []
+    # - name: bongo
+    #   port: 8080
+    #   protocol: TCP
+    #   targetPort: bongo
 
   loadBalancer:
+    # Specifies whether to create an additional service with type LoadBalancer
     enabled: false
+    # Specify the IP the LoadBalancer should use, leave empty for automatic assignment
     ip: ""
+    # Specify the externalTrafficPolicy of the service
     externalTrafficPolicy: Cluster
 
 probes:
+  # Specify the probe type
   type: httpGet
 
   options:
@@ -61,7 +73,9 @@ probes:
   failureThreshold: 1
 
 ingress:
+  # Specify whether to enable the ingress
   enabled: false
+  # Specify the className of the ingress
   className: ""
   annotations:
     kubernetes.io/ingress.class: nginx
@@ -98,34 +112,51 @@ deploymentStrategy:
   type: RollingUpdate
 
 pvc:
+  # Specifies whether to create a PVC
   enabled: false
+  # Specify the size of the PVC
   size: 1Gi
+  # Specify the storageclass of the pvc
   storageClassName: smb
+  # Specify the access modes for the pvc
   accessModes:
     - ReadWriteOnce
+  # Specify the path in the container to mount the pvc
   mountPoint: /data
 
+# Specify any values to add to the configmap
 config: {}
 
-# The 1password path for secrets
+# The external-secrets item
 secrets:
+  # Specify whether to create an external-secrets item
   enabled: false
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword-connect
+  # Specify the key external-secrets shoudl pull data form
   key: ""
 
+# Specify any additional volumes
 volumes: []
 
+# Specify any additional volume mounts
 volumeMounts: []
 
+# Specify any addtional ports on the container
 additionalPorts: []
+  # - name: bongo
+  #   containerPort: 8080
+  #   protocol: TCP
 
+# Specify any initContainer for the pod
 initContainers: []
 
+# Specify any extra container in the pod
 extraContainers: []
 
 vpn:
+  # Specify whether to enable a VPN sidecar
   enabled: false
 
   image:
@@ -137,16 +168,19 @@ vpn:
     capabilities: {add: ['NET_ADMIN']}
     privileged: true
 
-  # 1password path to vpn config
+  # external-secrets config
   secret:
+    # Specify whether to create an external secrets resource for the vpn config
     enabled: true
 
     secretStoreRef:
       kind: ClusterSecretStore
       name: onepassword-connect
+    # The key external secrets uses to pull in the wireguard configs
     key: ""
 
     mount:
+      # Specify whether to mount the secret in to container
       enabled: true
-
+      # Specify the path to mount the secret to
       path: /config
