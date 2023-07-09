@@ -11,7 +11,7 @@ jobs:
       packages: write
 
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -19,7 +19,7 @@ jobs:
       - name: Push chart
         uses: appany/helm-oci-chart-releaser@v0.4.1
         with:
-          name: generic-helm-chart
+          name: generic
           repository: henrywhitaker3
           tag: ${{ github.ref_name }}
           path: chart
