@@ -1,0 +1,215 @@
+suite: deployment test
+
+templates:
+  - deployment.yaml
+
+tests:
+  - it: creates a deployment type
+    asserts:
+      - isKind:
+          of: Deployment
+
+  - it: sets the image tag correctly
+    set:
+      image:
+        repository: bongo/bongo
+        tag: latest
+    asserts:
+      - equal:
+          path: .spec.template.spec.containers[0].image
+          value: bongo/bongo:latest
+
+  - it: sets the image pull policy correctly
+    set:
+      image:
+        pullPolicy: Always
+    asserts:
+      - equal:
+          path: .spec.template.spec.containers[0].imagePullPolicy
+          value: Always
+
+  - it: sets replicas correctly
+    set:
+      replicaCount: 5
+    asserts:
+      - equal:
+          path: .spec.replicas
+          value: 5
+
+  - it: sets deployment strategy
+    set:
+      deploymentStrategy:
+        type: Recreate
+    asserts:
+      - equal:
+          path: .spec.strategy.type
+          value: Recreate
+
+  - it: uses the fullnameOverride
+    set:
+      fullnameOverride: bongo
+    asserts:
+      - equal:
+          path: .metadata.name
+          value: bongo
+
+  - it: adds extra pod annotations
+    set:
+      podAnnotations:
+        bongo: bingo
+    asserts:
+      - equal:
+          path: .spec.template.metadata.annotations.bongo
+          value: bingo
+    
+  - it: doesn't add the volumes key when pvc.enabled == false and no extra volumes configured
+    set:
+      pvc.enabled: false
+    asserts:
+      - notExists:
+          path: .spec.template.spec.volumes
+      - notExists:
+          path: .spec.template.spec.containers[0].volumeMounts
+    
+  - it: adds the volumes key when pvc.enabled == true
+    set:
+      pvc.enabled: true
+    asserts:
+      - exists:
+          path: .spec.template.spec.volumes
+      - exists:
+          path: .spec.template.spec.containers[0].volumeMounts
+    
+  - it: adds the volumes key when extra volumes are configured
+    set:
+      pvc.enabled: false
+      volumes:
+        - name: bongo
+          hostPath:
+            path: /bongo
+    asserts:
+      - exists:
+          path: .spec.template.spec.volumes
+    
+  - it: adds the volumeMounts key when extra volume mounts are configured
+    set:
+      pvc.enabled: false
+      volumeMounts:
+        - mountPath: /bongo
+          name: bongo
+    asserts:
+      - exists:
+          path: .spec.template.spec.containers[0].volumeMounts
+    
+  - it: adds empty resources by default
+    asserts:
+      - isEmpty:
+          path: .spec.template.spec.containers[0].resources
+          
+  - it: adds resources when configured
+    set:
+      resources:
+        limits:
+          cpu: 100m
+    asserts:
+      - isNotEmpty:
+          path: .spec.template.spec.containers[0].resources
+      - equal:
+          path: .spec.template.spec.containers[0].resources.limits.cpu
+          value: 100m
+
+  - it: adds the configmap to the envFrom
+    set:
+      fullnameOverride: bongo
+    asserts:
+      - contains:
+          path: .spec.template.spec.containers[0].envFrom
+          content:
+            configMapRef:
+              name: bongo
+  
+  - it: adds the secret to the envFrom when secrets.enabled == true
+    set:
+      secrets.enabled: true
+      fullnameOverride: bongo
+    asserts:
+      - contains:
+          path: .spec.template.spec.containers[0].envFrom
+          content:
+            secretRef:
+              name: bongo
+  
+  - it: doesn't add the secret to the envFrom when secrets.enabled == false
+    set:
+      secrets.enabled: false
+      fullnameOverride: bongo
+    asserts:
+      - notContains:
+          path: .spec.template.spec.containers[0].envFrom
+          content:
+            secretRef:
+              name: bongo
+              
+  - it: creates one container by default
+    asserts:
+      - lengthEqual:
+          path: .spec.template.spec.containers
+          count: 1
+              
+  - it: adds extraContainers container when configured
+    set:
+      extraContainers:
+        - name: bongo
+          image: bongo/bongo:latest
+          command:
+            - tail
+            - -f
+            - /dev/null
+    asserts:
+      - lengthEqual:
+          path: .spec.template.spec.containers
+          count: 2
+
+  - it: doesn't create initContainers by default
+    asserts:
+      - notExists:
+          path: .spec.template.spec.initContainers
+
+  - it: adds initContainers container when configured
+    set:
+      initContainers:
+        - name: bongo
+          image: bongo/bongo:latest
+          command:
+            - tail
+            - -f
+            - /dev/null
+    asserts:
+      - exists:
+          path: .spec.template.spec.initContainers
+      - lengthEqual:
+          path: .spec.template.spec.initContainers
+          count: 1
+
+  - it: creates an extra container when vpn is enabled
+    set:
+      vpn.enabled: true
+    asserts:
+      - lengthEqual:
+          path: .spec.template.spec.containers
+          count: 2
+      - equal:
+          path: .spec.template.spec.containers[1].name
+          value: wireguard
+      - equal:
+          path: .spec.template.spec.containers[1].image
+          value: linuxserver/wireguard:latest
+
+  - it: mounts the pvc to the specified path
+    set:
+      pvc.enabled: true
+      pvc.mountPath: /bongo
+    asserts:
+      - equal:
+          path: .spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /bongo
