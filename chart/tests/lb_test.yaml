@@ -1,0 +1,58 @@
+suite: service test
+
+templates:
+  - lb.yaml
+
+tests:
+  - it: should create when using default values
+    set:
+      service.loadBalancer.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind: 
+          of: Service
+
+  - it: should create when service.enabled == true
+    set:
+      service.enabled: true
+      service.loadBalancer.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind: 
+          of: Service
+      - matchRegex:
+          path: metadata.name
+          pattern: -generic-lb$
+
+  - it: uses the fullnameOverride
+    set:
+      fullnameOverride: bongo
+      service.loadBalancer.enabled: true
+    asserts:
+      - equal:
+          path: .metadata.name
+          value: bongo-lb
+
+  - it: adds additional ports
+    set:
+      service.loadBalancer.enabled: true
+      service.additionalPorts:
+        - name: bongo
+          port: 8080
+          protocol: TCP
+          targetPort: bongo
+    asserts:
+      - equal:
+          path: spec.ports[1].name
+          value: bongo
+      - equal:
+          path: spec.ports[1].port
+          value: 8080
+      - equal:
+          path: spec.ports[1].protocol
+          value: TCP
+      - equal:
+          path: spec.ports[1].targetPort
+          value: bongo
