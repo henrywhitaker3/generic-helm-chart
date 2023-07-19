@@ -36,6 +36,8 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
+  # Specifies whether or not to create a service
+  enabled: true
   # Specifies the type of the service
   type: ClusterIP
   # Specifies the port of the service
@@ -59,6 +61,8 @@ service:
     externalTrafficPolicy: Cluster
 
 probes:
+  # Specifies whether or not to add probes to the deployment
+  enabled: true
   # Specify the probe type
   type: httpGet
 

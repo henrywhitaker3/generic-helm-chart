@@ -67,10 +67,12 @@ spec:
             {{- if (gt (len .Values.additionalPorts) 0) }}
             {{ .Values.additionalPorts | toYaml | nindent 12 }}
             {{- end }}
+          {{- if .Values.probes.enabled }}
           livenessProbe:
             {{- include "generic.probes" . | nindent 12 }}
           readinessProbe:
             {{- include "generic.probes" . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if or (.Values.pvc.enabled) (gt (len .Values.volumeMounts) 0) }}
