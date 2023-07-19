@@ -127,3 +127,25 @@ tests:
           content:
             configMapRef:
               name: bongo
+  
+  - it: adds the secret to the envFrom when secrets.enabled == true
+    set:
+      secrets.enabled: true
+      fullnameOverride: bongo
+    asserts:
+      - contains:
+          path: .spec.template.spec.containers[0].envFrom
+          content:
+            secretRef:
+              name: bongo
+  
+  - it: doesn't add the secret to the envFrom when secrets.enabled == false
+    set:
+      secrets.enabled: false
+      fullnameOverride: bongo
+    asserts:
+      - notContains:
+          path: .spec.template.spec.containers[0].envFrom
+          content:
+            secretRef:
+              name: bongo
