@@ -23,6 +23,14 @@ tests:
           path: metadata.name
           pattern: -generic$
 
+  - it: uses the fullnameOverride
+    set:
+      fullnameOverride: bongo
+    asserts:
+      - equal:
+          path: .metadata.name
+          value: bongo
+
   - it: adds additional ports
     set:
       service.additionalPorts:

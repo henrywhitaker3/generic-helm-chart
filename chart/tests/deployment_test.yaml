@@ -44,4 +44,70 @@ tests:
       - equal:
           path: .spec.strategy.type
           value: Recreate
+
+  - it: uses the fullnameOverride
+    set:
+      fullnameOverride: bongo
+    asserts:
+      - equal:
+          path: .metadata.name
+          value: bongo
+
+  - it: adds extra pod annotations
+    set:
+      podAnnotations:
+        bongo: bingo
+    asserts:
+      - equal:
+          path: .spec.template.metadata.annotations.bongo
+          value: bingo
+    
+  - it: doesn't add the volumes key when pvc.enabled == false and no extra volumes configured
+    set:
+      pvc.enabled: false
+    asserts:
+      - notExists:
+          path: .spec.template.spec.volumes
+    
+  - it: adds the volumes key when pvc.enabled == true
+    set:
+      pvc.enabled: true
+    asserts:
+      - exists:
+          path: .spec.template.spec.volumes
+    
+  - it: adds the volumes key when extra volumes are configured
+    set:
+      pvc.enabled: false
+      volumes:
+        - name: bongo
+          hostPath:
+            path: /bongo
+    asserts:
+      - exists:
+          path: .spec.template.spec.volumes
+    
+  - it: doesn't add the volumeMounts key when pvc.enabled == false and no extra volume mounts configured
+    set:
+      pvc.enabled: false
+    asserts:
+      - notExists:
+          path: .spec.template.spec.containers[0].volumeMounts
+    
+  - it: adds the volumes key when pvc.enabled == true
+    set:
+      pvc.enabled: true
+    asserts:
+      - exists:
+          path: .spec.template.spec.containers[0].volumeMounts
+    
+  - it: adds the volumes key when extra volumes are configured
+    set:
+      pvc.enabled: false
+      volumeMounts:
+        - mountPath: /bongo
+          name: bongo
+    asserts:
+      - exists:
+          path: .spec.template.spec.containers[0].volumeMounts
     
