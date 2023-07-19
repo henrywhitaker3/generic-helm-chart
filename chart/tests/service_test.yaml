@@ -4,10 +4,19 @@ templates:
   - service.yaml
 
 tests:
+  - it: should create when using default values
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind: 
+          of: Service
+
   - it: should create when service.enabled == true
     set:
       service.enabled: true
     asserts:
+      - hasDocuments:
+          count: 1
       - isKind: 
           of: Service
       - matchRegex:
