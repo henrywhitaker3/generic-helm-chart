@@ -23,6 +23,13 @@ tests:
           path: metadata.name
           pattern: -generic$
 
+  - it: shouldn't create when service.enabled == false
+    set:
+      service.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
   - it: uses the fullnameOverride
     set:
       fullnameOverride: bongo
