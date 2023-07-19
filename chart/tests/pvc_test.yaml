@@ -1,0 +1,50 @@
+suite: pvc test
+
+templates:
+  - pvc.yaml
+
+tests:
+  - it: doesn't create a pvc by default
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: creates a pvc when 
+    set:
+      pvc.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PersistentVolumeClaim
+
+  - it: sets the pvc size
+    set:
+      pvc.enabled: true
+      pvc.size: 150Gi
+    asserts:
+      - equal:
+          path: .spec.resources.requests.storage
+          value: 150Gi
+
+  - it: sets the pvc class
+    set:
+      pvc.enabled: true
+      pvc.storageClassName: bongo
+    asserts:
+      - equal:
+          path: .spec.storageClassName
+          value: bongo
+
+  - it: sets the pvc access modes
+    set:
+      pvc.enabled: true
+      pvc.accessModes:
+        - ReadWriteMany
+    asserts:
+      - lengthEqual:
+        path: .spec.accessModes
+        count: 1
+      - equal:
+          path: .spec.accessModes[0]
+          value: ReadWriteMany

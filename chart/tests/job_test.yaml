@@ -1,0 +1,88 @@
+suite: job test
+
+templates:
+  - job.yaml
+
+tests:
+  - it: doesn't create any jobs by default
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: creates a job when configured
+    set:
+      jobs:
+        - name: bongo
+          containers:
+            - name: bongo-cont
+              image: bongo/bongo:latest
+              command:
+                - /bin/sh
+                - -c
+                - echo
+                - hello
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Job
+      - equal:
+          path: .metadata.name
+          value: bongo
+      - equal:
+          path: .spec.template.spec.containers[0].name
+          value: bongo-cont
+      - lengthEqual:
+          path: .spec.template.spec.containers
+          count: 1
+
+  - it: sets the default ttl to 0
+    set:
+      jobs:
+        - name: bongo
+          containers:
+            - name: bongo-cont
+              image: bongo/bongo:latest
+              command:
+                - /bin/sh
+                - -c
+                - echo
+                - hello
+    asserts:
+      - equal:
+          path: .spec.ttlSecondsAfterFinished
+          value: 0
+
+  - it: sets the default restartPolicy to Never
+    set:
+      jobs:
+        - name: bongo
+          containers:
+            - name: bongo-cont
+              image: bongo/bongo:latest
+              command:
+                - /bin/sh
+                - -c
+                - echo
+                - hello
+    asserts:
+      - equal:
+          path: .spec.template.spec.restartPolicy
+          value: Never
+
+  - it: sets the default backoffLimit to 3
+    set:
+      jobs:
+        - name: bongo
+          containers:
+            - name: bongo-cont
+              image: bongo/bongo:latest
+              command:
+                - /bin/sh
+                - -c
+                - echo
+                - hello
+    asserts:
+      - equal:
+          path: .spec.backoffLimit
+          value: 3
