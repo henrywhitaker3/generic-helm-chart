@@ -117,3 +117,13 @@ tests:
       - equal:
           path: .spec.template.spec.containers[0].resources.limits.cpu
           value: 100m
+
+  - it: adds the configmap to the envFrom
+    set:
+      fullnameOverride: bongo
+    asserts:
+      - contains:
+          path: .spec.template.spec.containers[0].envFrom
+          content:
+            configMapRef:
+              name: bongo
