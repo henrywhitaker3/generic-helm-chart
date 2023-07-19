@@ -1,0 +1,22 @@
+version: "3"
+
+tasks:
+  test:
+    cmds:
+      - helm unittest chart/
+
+  release:
+    env:
+      TAG: '{{ .TAG }}'
+    preconditions:
+      - sh: "[[ ! -z $TAG ]]"
+        msg: Please set the tag
+      - sh: 'echo $TAG | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$"'
+        msg: Please provide tag in format X.X.X
+    cmds:
+      - yq -i '.version = strenv(TAG)' chart/Chart.yaml
+      - git add chart/Chart.yaml
+      - git push
+      - git tag "v$TAG"
+      - git push origin "v$TAG"
+      

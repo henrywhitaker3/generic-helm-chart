@@ -229,3 +229,89 @@ tests:
           path: .spec.template.spec.containers[0].livenessProbe
       - notExists:
           path: .spec.template.spec.containers[0].readinessProbe
+
+  - it: sets the httpGet probe properly
+    set:
+      probes.enabled: true
+      probes.type: httpGet
+      probes.options:
+        port: 8080
+        path: /bongo
+    asserts:
+      - exists:
+          path: .spec.template.spec.containers[0].livenessProbe.httpGet
+      - exists:
+          path: .spec.template.spec.containers[0].readinessProbe.httpGet
+      - notExists:
+          path: .spec.template.spec.containers[0].livenessProbe.tcpSocket
+      - notExists:
+          path: .spec.template.spec.containers[0].readinessProbe.tcpSocket
+      - notExists:
+          path: .spec.template.spec.containers[0].livenessProbe.exec
+      - notExists:
+          path: .spec.template.spec.containers[0].readinessProbe.exec
+      - equal:
+          path: .spec.template.spec.containers[0].livenessProbe.httpGet.port
+          value: 8080
+      - equal:
+          path: .spec.template.spec.containers[0].readinessProbe.httpGet.port
+          value: 8080
+      - equal:
+          path: .spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /bongo
+      - equal:
+          path: .spec.template.spec.containers[0].readinessProbe.httpGet.path
+          value: /bongo
+
+  - it: sets the tcpSocket probe properly
+    set:
+      probes.enabled: true
+      probes.type: tcpSocket
+      probes.options:
+        port: 8080
+    asserts:
+      - notExists:
+          path: .spec.template.spec.containers[0].livenessProbe.httpGet
+      - notExists:
+          path: .spec.template.spec.containers[0].readinessProbe.httpGet
+      - exists:
+          path: .spec.template.spec.containers[0].livenessProbe.tcpSocket
+      - exists:
+          path: .spec.template.spec.containers[0].readinessProbe.tcpSocket
+      - equal:
+          path: .spec.template.spec.containers[0].livenessProbe.tcpSocket.port
+          value: 8080
+      - equal:
+          path: .spec.template.spec.containers[0].readinessProbe.tcpSocket.port
+          value: 8080
+
+  - it: sets the exec probe properly
+    set:
+      probes.enabled: true
+      probes.type: exec
+      probes.options:
+        command:
+          - tail
+          - -f
+          - /dev/null
+    asserts:
+      - notExists:
+          path: .spec.template.spec.containers[0].livenessProbe.httpGet
+      - notExists:
+          path: .spec.template.spec.containers[0].readinessProbe.httpGet
+      - notExists:
+          path: .spec.template.spec.containers[0].livenessProbe.tcpSocket
+      - notExists:
+          path: .spec.template.spec.containers[0].readinessProbe.tcpSocket
+      - exists:
+          path: .spec.template.spec.containers[0].livenessProbe.exec
+      - exists:
+          path: .spec.template.spec.containers[0].readinessProbe.exec
+      - contains:
+          path: .spec.template.spec.containers[0].livenessProbe.exec.command
+          content:
+            tail
+      - contains:
+          path: .spec.template.spec.containers[0].readinessProbe.exec.command
+          content:
+            tail

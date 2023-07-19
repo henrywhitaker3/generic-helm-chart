@@ -72,12 +72,21 @@ tcpSocket:
   port: {{ .Values.probes.options.port }}
 {{- end -}}
 
+{{- define "generic.probes.exec" -}}
+exec:
+  command:
+    {{- .Values.probes.options.command | toYaml | nindent 2 }}
+{{- end -}}
+
 {{- define "generic.probes" -}}
 {{- if eq .Values.probes.type "httpGet" -}}
 {{ include "generic.probes.httpGet" . }}
 {{- end }}
 {{- if eq .Values.probes.type "tcpSocket" -}}
 {{ include "generic.probes.tcpSocket" . }}
+{{- end }}
+{{- if eq .Values.probes.type "exec" -}}
+{{ include "generic.probes.exec" . }}
 {{- end }}
 initialDelaySeconds: {{ .Values.probes.initialDelaySeconds }}
 periodSeconds: {{ .Values.probes.periodSeconds }}
