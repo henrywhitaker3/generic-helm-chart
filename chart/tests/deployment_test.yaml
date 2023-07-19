@@ -68,6 +68,8 @@ tests:
     asserts:
       - notExists:
           path: .spec.template.spec.volumes
+      - notExists:
+          path: .spec.template.spec.containers[0].volumeMounts
     
   - it: adds the volumes key when pvc.enabled == true
     set:
@@ -75,6 +77,8 @@ tests:
     asserts:
       - exists:
           path: .spec.template.spec.volumes
+      - exists:
+          path: .spec.template.spec.containers[0].volumeMounts
     
   - it: adds the volumes key when extra volumes are configured
     set:
@@ -87,21 +91,7 @@ tests:
       - exists:
           path: .spec.template.spec.volumes
     
-  - it: doesn't add the volumeMounts key when pvc.enabled == false and no extra volume mounts configured
-    set:
-      pvc.enabled: false
-    asserts:
-      - notExists:
-          path: .spec.template.spec.containers[0].volumeMounts
-    
-  - it: adds the volumes key when pvc.enabled == true
-    set:
-      pvc.enabled: true
-    asserts:
-      - exists:
-          path: .spec.template.spec.containers[0].volumeMounts
-    
-  - it: adds the volumes key when extra volumes are configured
+  - it: adds the volumeMounts key when extra volume mounts are configured
     set:
       pvc.enabled: false
       volumeMounts:
@@ -111,3 +101,19 @@ tests:
       - exists:
           path: .spec.template.spec.containers[0].volumeMounts
     
+  - it: adds empty resources by default
+    asserts:
+      - isEmpty:
+          path: .spec.template.spec.containers[0].resources
+          
+  - it: adds resources when configured
+    set:
+      resources:
+        limits:
+          cpu: 100m
+    asserts:
+      - isNotEmpty:
+          path: .spec.template.spec.containers[0].resources
+      - equal:
+          path: .spec.template.spec.containers[0].resources.limits.cpu
+          value: 100m
