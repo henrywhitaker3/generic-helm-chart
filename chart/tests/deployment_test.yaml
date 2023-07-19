@@ -190,3 +190,17 @@ tests:
       - lengthEqual:
           path: .spec.template.spec.initContainers
           count: 1
+
+  - it: creates an extra container when vpn is enabled
+    set:
+      vpn.enabled: true
+    asserts:
+      - lengthEqual:
+          path: .spec.template.spec.containers
+          count: 2
+      - equal:
+          path: .spec.template.spec.containers[1].name
+          value: wireguard
+      - equal:
+          path: .spec.template.spec.containers[1].image
+          value: linuxserver/wireguard:latest
