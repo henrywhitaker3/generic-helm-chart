@@ -1,0 +1,36 @@
+suite: service test
+
+templates:
+  - service.yaml
+
+tests:
+  - it: should create when service.enabled == true
+    set:
+      service.enabled: true
+    asserts:
+      - isKind: 
+          of: Service
+      - matchRegex:
+          path: metadata.name
+          pattern: -generic$
+
+  - it: adds additional ports
+    set:
+      service.additionalPorts:
+        - name: bongo
+          port: 8080
+          protocol: TCP
+          targetPort: bongo
+    asserts:
+      - equal:
+          path: spec.ports[1].name
+          value: bongo
+      - equal:
+          path: spec.ports[1].port
+          value: 8080
+      - equal:
+          path: spec.ports[1].protocol
+          value: TCP
+      - equal:
+          path: spec.ports[1].targetPort
+          value: bongo

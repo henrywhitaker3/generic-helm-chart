@@ -1,0 +1,31 @@
+suite: deployment test
+
+templates:
+  - deployment.yaml
+
+tests:
+  - it: creates a deployment type
+    asserts:
+      - isKind:
+          of: Deployment
+
+  - it: sets the image tag correctly
+    set:
+      image:
+        repository: bongo/bongo
+        tag: latest
+    asserts:
+      - equal:
+          path: .spec.template.spec.containers[0].image
+          value: bongo/bongo:latest
+    
+
+  - it: sets the image pull policy correctly
+    set:
+      image:
+        pullPolicy: Always
+    asserts:
+      - equal:
+          path: .spec.template.spec.containers[0].imagePullPolicy
+          value: Always
+    
