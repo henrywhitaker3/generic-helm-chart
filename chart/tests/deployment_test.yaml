@@ -204,3 +204,12 @@ tests:
       - equal:
           path: .spec.template.spec.containers[1].image
           value: linuxserver/wireguard:latest
+
+  - it: mounts the pvc to the specified path
+    set:
+      pvc.enabled: true
+      pvc.mountPath: /bongo
+    asserts:
+      - equal:
+          path: .spec.template.spec.containers[0].volumeMounts[0].mountPath
+          value: /bongo
