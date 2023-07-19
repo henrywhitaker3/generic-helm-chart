@@ -15,8 +15,9 @@ tasks:
         msg: Please provide tag in format X.X.X
     cmds:
       - yq -i '.version = strenv(TAG)' chart/Chart.yaml
+      - sleep 1
       - git add chart/Chart.yaml
+      - git commit -m "Updated chart to v$TAG"
       - git push
       - git tag "v$TAG"
       - git push origin "v$TAG"
-      
