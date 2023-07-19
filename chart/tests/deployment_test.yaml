@@ -149,3 +149,44 @@ tests:
           content:
             secretRef:
               name: bongo
+              
+  - it: creates one container by default
+    asserts:
+      - lengthEqual:
+          path: .spec.template.spec.containers
+          count: 1
+              
+  - it: adds extraContainers container when configured
+    set:
+      extraContainers:
+        - name: bongo
+          image: bongo/bongo:latest
+          command:
+            - tail
+            - -f
+            - /dev/null
+    asserts:
+      - lengthEqual:
+          path: .spec.template.spec.containers
+          count: 2
+
+  - it: doesn't create initContainers by default
+    asserts:
+      - notExists:
+          path: .spec.template.spec.initContainers
+
+  - it: adds initContainers container when configured
+    set:
+      initContainers:
+        - name: bongo
+          image: bongo/bongo:latest
+          command:
+            - tail
+            - -f
+            - /dev/null
+    asserts:
+      - exists:
+          path: .spec.template.spec.initContainers
+      - lengthEqual:
+          path: .spec.template.spec.initContainers
+          count: 1
