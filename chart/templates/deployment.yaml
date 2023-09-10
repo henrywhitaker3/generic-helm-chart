@@ -59,6 +59,14 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          {{- if (gt (len .Values.entrypoint.command) 0) }}
+          command:
+            {{ .Values.entrypoint.command | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if (gt (len .Values.entrypoint.args) 0) }}
+          args:
+            {{ .Values.entrypoint.args | toYaml | nindent 12 }}
+          {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: {{ .Values.service.portName }}

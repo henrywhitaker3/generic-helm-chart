@@ -15,6 +15,10 @@ image:
   # Specify an optional secret with the registry authentication token
   token: ""
 
+entrypoint:
+  command: []
+  args: []
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true

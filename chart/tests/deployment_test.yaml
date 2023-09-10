@@ -71,6 +71,34 @@ tests:
       - equal:
           path: .spec.template.metadata.annotations.bongo
           value: bingo
+
+  - it: doesn't set custom command when not defined
+    asserts:
+      - notExists:
+          path: .spec.template.spec.containers[0].command
+
+  - it: sets custom command when defined
+    set:
+      entrypoint:
+        command: [bongo]
+    asserts:
+      - equal:
+          path: .spec.template.spec.containers[0].command
+          value: [bongo]
+
+  - it: doesn't set custom args when not defined
+    asserts:
+      - notExists:
+          path: .spec.template.spec.containers[0].command
+
+  - it: sets custom args when defined
+    set:
+      entrypoint:
+        args: [bongo]
+    asserts:
+      - equal:
+          path: .spec.template.spec.containers[0].args
+          value: [bongo]
     
   - it: doesn't add the volumes key when pvc.enabled == false and no extra volumes configured
     set:
