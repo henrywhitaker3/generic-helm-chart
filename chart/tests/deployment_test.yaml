@@ -19,6 +19,16 @@ tests:
           path: .spec.template.spec.containers[0].image
           value: bongo/bongo:latest
 
+  - it: sets the image pull token if specified
+    set:
+      image:
+        token: bongo
+    asserts:
+      - equal:
+          path: .spec.template.spec.imagePullSecrets[0]
+          value: 
+            name: bongo
+
   - it: sets the image pull policy correctly
     set:
       image:

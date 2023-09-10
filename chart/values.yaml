@@ -12,6 +12,8 @@ image:
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
+  # Specify an optional secret with the registry authentication token
+  token: ""
 
 serviceAccount:
   # Specifies whether a service account should be created

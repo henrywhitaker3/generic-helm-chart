@@ -47,9 +47,9 @@ spec:
       initContainers:
         {{- .Values.initContainers | toYaml | nindent 8 }}
       {{- end }}
-      {{- with .Values.imagePullSecrets }}
+      {{- if .Values.image.token }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
+        - name: {{ .Values.image.token }}
       {{- end }}
       serviceAccountName: {{ include "generic.serviceAccountName" . }}
       securityContext:
