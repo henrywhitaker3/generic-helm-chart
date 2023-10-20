@@ -196,4 +196,4 @@ vpn:
       # Specify whether to mount the secret in to container
       enabled: true
       # Specify the path to mount the secret to
-      path: /config
+      path: /config/wg_confs
