@@ -10,7 +10,7 @@ spec:
       interval: {{ .Values.metrics.interval }}
       path: {{ .Values.metrics.path }}
       scrapeTimeout: {{ .Values.metrics.timeout }}
-      targetPort: {{ .Values.metrics.port }}
+      port: {{ .Values.metrics.port }}
   namespaceSelector:
     matchNames:
         - {{ .Release.Namespace }}
