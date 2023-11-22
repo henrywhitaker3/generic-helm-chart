@@ -82,6 +82,15 @@ probes:
   successThreshold: 1
   failureThreshold: 1
 
+metrics:
+  # If enabled, generates a ServiceMonitor for prometheus
+  enabled: false
+  path: /metrics
+  interval: 60s
+  timeout: 30s
+  port: 3000
+  honorLabels: false
+
 ingress:
   # Specify whether to enable the ingress
   enabled: false

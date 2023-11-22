@@ -1,0 +1,44 @@
+suite: ServiceMonitor test
+
+templates:
+  - servicemonitor.yaml
+
+tests:
+  - it: should create when using default values
+    set:
+      metrics.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind: 
+          of: ServiceMonitor
+
+  - it: uses the fullnameOverride
+    set:
+      fullnameOverride: bongo
+      metrics.enabled: true
+    asserts:
+      - equal:
+          path: .metadata.name
+          value: bongo
+
+  - it: sets the variables correctly
+    set: 
+      metrics.enabled: true
+      metrics.path: /bongo
+      metrics.timeout: 6s
+      metrics.interval: 5s
+      metrics.port: 1
+    asserts:
+      - equal:
+          path: .spec.endpoints[0].interval
+          value: 5s
+      - equal:
+          path: .spec.endpoints[0].path
+          value: /bongo
+      - equal:
+          path: .spec.endpoints[0].scrapeTimeout
+          value: 6s
+      - equal:
+          path: .spec.endpoints[0].targetPort
+          value: 1
