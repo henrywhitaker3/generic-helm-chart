@@ -4,6 +4,13 @@ templates:
   - servicemonitor.yaml
 
 tests:
+  - it: doesn't create when using default values
+    set:
+      metrics.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
   - it: should create when using default values
     set:
       metrics.enabled: true
