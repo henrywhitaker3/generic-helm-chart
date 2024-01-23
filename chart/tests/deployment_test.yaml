@@ -355,7 +355,7 @@ tests:
             tail
   - it: sets the app version according to the chart
     chart:
-      Version: "1.3.2"
+      version: "1.3.2"
       appVersion: "1.16.0"
     asserts:
       - isSubset:
@@ -365,7 +365,7 @@ tests:
             app.kubernetes.io/version: "1.16.0"
   - it: sets the app version according to the overrides
     chart:
-      Version: 1.3.2
+      version: 1.3.2
       appVersion: "1.16.0"
     set:
       versionOverride: 11.0.0
