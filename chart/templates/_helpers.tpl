@@ -27,7 +27,7 @@ If release name contains chart name it will be used as a full name.
 Create chart name and version as used by the chart label.
 */}}
 {{- define "generic.chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-%s" .Chart.Name (default .Chart.Version .Values.versionOverride) | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -36,8 +36,8 @@ Common labels
 {{- define "generic.labels" -}}
 helm.sh/chart: {{ include "generic.chart" . }}
 {{ include "generic.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- if  or (.Chart.AppVersion) (.Values.appVersionOverride) }}
+app.kubernetes.io/version: {{ default .Chart.AppVersion .Values.appVersionOverride | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}

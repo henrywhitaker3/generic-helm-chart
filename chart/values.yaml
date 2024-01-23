@@ -5,6 +5,11 @@
 nameOverride: ""
 fullnameOverride: ""
 
+# Override the chart version
+versionOverride: ""
+# Override the app version
+appVersionOverride: ""
+
 replicaCount: 1
 
 image:
