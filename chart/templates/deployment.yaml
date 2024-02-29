@@ -93,6 +93,9 @@ spec:
             {{- .Values.volumeMounts | toYaml | nindent 12 }}
             {{- end }}
           {{- end }}
+          {{- if .Values.tty }}
+          tty: {{ .Values.tty }}
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "generic.fullname" . }}

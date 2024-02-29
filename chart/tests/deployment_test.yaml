@@ -252,6 +252,19 @@ tests:
           path: .spec.template.spec.containers[0].volumeMounts[0].mountPath
           value: /bongo
 
+  - it: doesnt set tty if not in values
+    asserts:
+      - notExists:
+          path: .spec.template.spec.containers[0].tty
+
+  - it: set tty if in values
+    set:
+      tty: true
+    asserts:
+      - equal:
+          path: .spec.template.spec.containers[0].tty
+          value: true
+
   - it: sets the probes by default
     asserts:
       - isNotEmpty:
