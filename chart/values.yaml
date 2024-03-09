@@ -179,6 +179,9 @@ initContainers: []
 # Specify any extra container in the pod
 extraContainers: []
 
+# Specify any extra env fields
+env: []
+
 # Specify any jobs to deploy
 jobs: []
 

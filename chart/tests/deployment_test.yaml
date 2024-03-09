@@ -389,3 +389,24 @@ tests:
           content:
             helm.sh/chart: generic-11.0.0
             app.kubernetes.io/version: "2.0.0"
+
+  - it: doesn't include the env field when not set
+    asserts:
+      - notExists:
+          path: .spec.template.spec.containers[0].env
+
+  - it: sets the env field when in values
+    set:
+      env:
+        - name: BONGO
+          value: BINGO
+    asserts:
+      - lengthEqual:
+          path: .spec.template.spec.containers[0].env
+          count: 1
+      - equal:
+          path: .spec.template.spec.containers[0].env[0].name
+          value: BONGO
+      - equal:
+          path: .spec.template.spec.containers[0].env[0].value
+          value: BINGO

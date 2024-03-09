@@ -96,6 +96,10 @@ spec:
           {{- if .Values.tty }}
           tty: {{ .Values.tty }}
           {{- end }}
+          {{- if .Values.env }}
+          env:
+            {{ .Values.env | toYaml | nindent 12 }}
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "generic.fullname" . }}
