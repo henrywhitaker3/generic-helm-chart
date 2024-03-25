@@ -100,13 +100,17 @@ spec:
           env:
             {{ .Values.env | toYaml | nindent 12 }}
           {{- end }}
+          {{- if or (.Values.secrets.enabled) (.Values.config) }}
           envFrom:
+            {{- if .Values.config }}
             - configMapRef:
                 name: {{ include "generic.fullname" . }}
+            {{- end }}
             {{- if .Values.secrets.enabled }}
             - secretRef:
                 name: {{ include "generic.fullname" . }}
             {{- end }}
+        {{- end }}
         {{- if gt (len .Values.extraContainers) 0 }}
         {{ .Values.extraContainers | toYaml | nindent 8 }}
         {{- end }}

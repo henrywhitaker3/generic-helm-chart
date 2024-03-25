@@ -156,15 +156,24 @@ tests:
           path: .spec.template.spec.containers[0].resources.limits.cpu
           value: 100m
 
-  - it: adds the configmap to the envFrom
+  - it: adds the configmap to the envFrom when created
     set:
       fullnameOverride: bongo
+      config:
+        BONGO: bingo
     asserts:
       - contains:
           path: .spec.template.spec.containers[0].envFrom
           content:
             configMapRef:
               name: bongo
+
+  - it: does not add the configmap to the envFrom when not set
+    set:
+      fullnameOverride: bongo
+    asserts:
+      - notExists:
+          path: .spec.template.spec.containers[0].envFrom
   
   - it: adds the secret to the envFrom when secrets.enabled == true
     set:
@@ -182,11 +191,8 @@ tests:
       secrets.enabled: false
       fullnameOverride: bongo
     asserts:
-      - notContains:
+      - notExists:
           path: .spec.template.spec.containers[0].envFrom
-          content:
-            secretRef:
-              name: bongo
               
   - it: creates one container by default
     asserts:

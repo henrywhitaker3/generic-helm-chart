@@ -1,0 +1,21 @@
+suite: configmap test
+
+templates:
+  - configmap.yaml
+
+tests:
+  - it: does not create a cm when no items in map
+    asserts:
+      - hasDocuments:
+          count: 0
+  
+  - it: creates a cm when items in map
+    set:
+      config:
+        BONGO: bingo
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: .data.BONGO
+          value: bingo
