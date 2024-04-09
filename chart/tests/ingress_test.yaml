@@ -31,8 +31,16 @@ tests:
       - isSubset:
           path: .metadata.annotations
           content:
-            kubernetes.io/ingress.class: nginx
             kubernetes.io/tls-acme: "true"
+
+  - it: adds default ingress class when not set
+    set:
+      ingress:
+        enabled: true
+    asserts:
+      - equal:
+          path: .spec.ingressClassName
+          value: nginx
 
   - it: adds annotations when set
     set:
@@ -45,20 +53,14 @@ tests:
           content:
             bongo: bingo
 
-  - it: doesn't add ingressClassName by defaut
-    set:
-      ingress.enabled: true
-    asserts:
-      - notExists:
-          path: .spec.ingressClassName
-
   - it: adds ingressClassName when set
     set:
-      ingress.enabled: true
-      ingress.className: nginx
+      ingress:
+        enabled: true
+        className: bongo
     asserts:
       - exists:
           path: .spec.ingressClassName
       - equal:
           path: .spec.ingressClassName
-          value: nginx
+          value: bongo
