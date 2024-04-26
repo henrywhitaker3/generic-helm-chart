@@ -35,17 +35,36 @@ spec:
         - name: modules
           hostPath:
             path: /lib/modules
-        {{- if .Values.vpn.secret.mount.enabled }}
         - name: wg-config
+          emptyDir: {}
+        - name: wg-config-raw
           secret:
             secretName: {{ include "generic.fullname" . }}-wireguard
             optional: false
         {{- end }}
-        {{- end }}
       {{- end }}
-      {{-  if gt (len .Values.initContainers) 0 }}
+      {{-  if or (gt (len .Values.initContainers) 0) (.Values.vpn.enabled) }}
       initContainers:
-        {{- .Values.initContainers | toYaml | nindent 8 }}
+      {{- if .Values.vpn.enabled }}
+        - name: wg-configer
+          image: alpine:latest
+          volumeMounts:
+            - name: wg-config-raw
+              mountPath: /wg
+            - name: wg-config
+              mountPath: /config
+          commands:
+            - /bin/sh
+            - -c
+            - |
+              {{-  if ne .Values.vpn.before "" }}
+              {{ .Values.vpn.before }}
+              {{- end }}
+              cp /wg/wg0.conf /config/wg0.conf
+        {{- end }}
+        {{- with .Values.initContainers }}
+        {{ . | toYaml | nindent 8 }}
+        {{- end }}
       {{- end }}
       {{- if .Values.image.token }}
       imagePullSecrets:
@@ -145,11 +164,9 @@ spec:
             periodSeconds: 30
             timeoutSeconds: 5
           volumeMounts:
-            {{- if .Values.vpn.secret.mount.enabled }}
             - name: wg-config
               mountPath: {{ .Values.vpn.secret.mount.path }}
               readOnly: true
-            {{- end }}
             - mountPath: /lib/modules
               name: modules
         {{- end }}

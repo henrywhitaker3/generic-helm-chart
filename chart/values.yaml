@@ -197,6 +197,9 @@ vpn:
     capabilities: {add: ['NET_ADMIN']}
     privileged: true
 
+  # Scripts to run before copying over the wireguard config
+  before: ""
+
   # external-secrets config
   secret:
     # Specify whether to create an external secrets resource for the vpn config
@@ -206,7 +209,7 @@ vpn:
       kind: ClusterSecretStore
       name: onepassword-connect
     # The key external secrets uses to pull in the wireguard configs
-    key: ""
+    key: "wg0.conf"
 
     mount:
       # Specify whether to mount the secret in to container
