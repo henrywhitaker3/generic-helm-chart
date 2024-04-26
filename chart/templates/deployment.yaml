@@ -58,7 +58,7 @@ spec:
             - -c
             - |
               {{-  if ne .Values.vpn.before "" }}
-              {{ .Values.vpn.before }}
+              {{- .Values.vpn.before | nindent 14 }}
               {{- end }}
               echo Copying config file to shared volume
               cp /wg/wg0.conf /config/wg0.conf
