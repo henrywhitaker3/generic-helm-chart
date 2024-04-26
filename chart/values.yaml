@@ -197,8 +197,10 @@ vpn:
     capabilities: {add: ['NET_ADMIN']}
     privileged: true
 
-  # Scripts to run before copying over the wireguard config
-  before: ""
+  # Scripts to run to copy over the wirguard config
+  script: |
+    echo Copying config file to shared volume
+    cp /wg/wg0.conf /config/wg0.conf
 
   # external-secrets config
   secret:
