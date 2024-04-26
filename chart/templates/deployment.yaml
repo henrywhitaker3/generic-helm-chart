@@ -53,13 +53,14 @@ spec:
               mountPath: /wg
             - name: wg-config
               mountPath: /config
-          commands:
+          command:
             - /bin/sh
             - -c
             - |
               {{-  if ne .Values.vpn.before "" }}
               {{ .Values.vpn.before }}
               {{- end }}
+              echo Copying config file to shared volume
               cp /wg/wg0.conf /config/wg0.conf
         {{- end }}
         {{- with .Values.initContainers }}
