@@ -47,12 +47,7 @@ spec:
       initContainers:
       {{- if .Values.vpn.enabled }}
         - name: wg-configer
-          image: "{{ .Values.vpn.image.repository }}:{{ .Values.vpn.image.tag | default .Chart.AppVersion }}"
-          env:
-            - name: PUID
-              value: "911"
-            - name: PGID
-              value: "911"
+          image: alpine:latest
           volumeMounts:
             - name: wg-config-raw
               mountPath: /wg
@@ -141,11 +136,10 @@ spec:
           imagePullPolicy: {{ .Values.vpn.image.pullPolicy }}
           securityContext:
             {{- toYaml .Values.vpn.securityContext | nindent 12 }}
+          {{- if gt (len .Values.vpn.env) 0 }}
           env:
-            - name: PUID
-              value: "911"
-            - name: PGID
-              value: "911"
+            {{- toYaml .Values.vpn.env | nindent 12 }}
+          {{- end }}
           livenessProbe:
             exec:
               command:

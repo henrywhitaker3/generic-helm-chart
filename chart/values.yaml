@@ -197,6 +197,12 @@ vpn:
     capabilities: {add: ['NET_ADMIN']}
     privileged: true
 
+  env:
+    - name: PUID
+      value: "911"
+    - name: PGID
+      value: "911"
+
   # Scripts to run to copy over the wirguard config
   script: |
     echo Copying config file to shared volume
