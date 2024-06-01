@@ -47,7 +47,12 @@ spec:
       initContainers:
       {{- if .Values.vpn.enabled }}
         - name: wg-configer
-          image: alpine:latest
+          image: "{{ .Values.vpn.image.repository }}:{{ .Values.vpn.image.tag | default .Chart.AppVersion }}"
+          env:
+            - name: PUID
+              value: "911"
+            - name: PGID
+              value: "911"
           volumeMounts:
             - name: wg-config-raw
               mountPath: /wg
