@@ -136,6 +136,9 @@ spec:
           imagePullPolicy: {{ .Values.vpn.image.pullPolicy }}
           securityContext:
             {{- toYaml .Values.vpn.securityContext | nindent 12 }}
+          env:
+            PUID: 911
+            PGID: 911
           livenessProbe:
             exec:
               command:
