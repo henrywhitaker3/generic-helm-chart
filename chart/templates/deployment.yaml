@@ -137,8 +137,10 @@ spec:
           securityContext:
             {{- toYaml .Values.vpn.securityContext | nindent 12 }}
           env:
-            PUID: "911"
-            PGID: "911"
+            - name: PUID
+              value: "911"
+            - name: PGID
+              value: "911"
           livenessProbe:
             exec:
               command:
