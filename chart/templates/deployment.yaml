@@ -140,30 +140,26 @@ spec:
           env:
             {{- toYaml .Values.vpn.env | nindent 12 }}
           {{- end }}
+          {{- if .Values.vpn.probes.enabled }}
           livenessProbe:
+            {{- with .Values.vpn.probes.exec }}
             exec:
               command:
-                - ping
-                - -W
-                - "1"
-                - -c
-                - "3"
-                - "8.8.8.8"
+                {{- . | toYaml | nindent 16 }}
+            {{- end }}
             initialDelaySeconds: 10
             periodSeconds: 30
             timeoutSeconds: 5
           readinessProbe:
+            {{- with .Values.vpn.probes.exec }}
             exec:
               command:
-                - ping
-                - -W
-                - "1"
-                - -c
-                - "3"
-                - "8.8.8.8"
+                {{- . | toYaml | nindent 16 }}
+            {{- end }}
             initialDelaySeconds: 10
             periodSeconds: 30
             timeoutSeconds: 5
+          {{- end }}
           volumeMounts:
             - name: wg-config
               mountPath: {{ .Values.vpn.secret.mount.path }}

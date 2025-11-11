@@ -109,9 +109,9 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls:
-   - secretName: chart-example-tls
-     hosts:
-       - chart-example.local
+    - secretName: chart-example-tls
+      hosts:
+        - chart-example.local
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -188,13 +188,20 @@ vpn:
   # Specify whether to enable a VPN sidecar
   enabled: false
 
+  probes:
+    enabled: true
+    exec:
+      - sh
+      - -c
+      - curl https://am.i.mullvad.net/connected | grep "You are connected"
+
   image:
     repository: linuxserver/wireguard
     pullPolicy: Always
     tag: latest
 
   securityContext:
-    capabilities: {add: ['NET_ADMIN']}
+    capabilities: { add: ["NET_ADMIN"] }
     privileged: true
 
   env:
