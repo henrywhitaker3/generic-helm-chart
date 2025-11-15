@@ -34,5 +34,11 @@ spec:
       {{- with .matches }}
       {{- . | toYaml | nindent 6 }}
       {{- end }}
+    {{- if .filters }}
+    {{- with .filters }}
+    filters:
+      {{- . | toYaml | nindent 6 }}
+    {{- end }}
+    {{- end }}
   {{- end }}
 {{- end }}
