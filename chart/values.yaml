@@ -1,13 +1,7 @@
-# Default values for generic.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 nameOverride: ""
 fullnameOverride: ""
 
-# Override the chart version
 versionOverride: ""
-# Override the app version
 appVersionOverride: ""
 
 replicaCount: 1
@@ -112,6 +106,23 @@ ingress:
     - secretName: chart-example-tls
       hosts:
         - chart-example.local
+
+httpRoute:
+  enabled: false
+
+  labels: {}
+  annotations: {}
+
+  hostnames: []
+
+  parentRefs: []
+
+  rules:
+    - port: http
+      matches:
+        - path:
+            type: Prefix
+            value: /
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
