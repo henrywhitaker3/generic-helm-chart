@@ -1,0 +1,51 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "command": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "httpHeaders": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.HTTPHeader"
+            }
+        },
+        "path": {
+            "type": "string"
+        },
+        "port": {
+            "type": [
+                "integer",
+                "string"
+            ]
+        }
+    },
+    "$defs": {
+        "_definitions.json": {
+            "definitions": {
+                "io.k8s.api.core.v1.HTTPHeader": {
+                    "description": "HTTPHeader describes a custom header to be used in HTTP probes",
+                    "type": "object",
+                    "required": [
+                        "name",
+                        "value"
+                    ],
+                    "properties": {
+                        "name": {
+                            "description": "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.",
+                            "type": "string"
+                        },
+                        "value": {
+                            "description": "The header field value",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

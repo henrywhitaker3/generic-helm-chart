@@ -1,0 +1,12 @@
+---
+# @schema type:[string];required
+name: ""
+
+# @schema type:[integer];required
+port: 80
+
+# @schema enum:[TCP, UDP];required
+protocol: TCP
+
+# @schema type:[string]
+targetPort: ""

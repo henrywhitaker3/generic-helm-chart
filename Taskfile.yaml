@@ -5,9 +5,40 @@ tasks:
     cmds:
       - helm unittest chart/
 
+  nestedSchemas:
+    desc: Generate nested schemas
+    internal: true
+    silent: true
+    dir: chart/schemas
+    cmds:
+      - |
+        for file in *.yaml; do
+          helm schema --use-helm-docs --bundle --bundle-without-id --k8s-schema-version=v1.35.1 -f "$file" -o "${file%.*}.schema.json"
+        done
+
+  schema:
+    desc: Generate the schema for the chart
+    dir: chart
+    sources:
+      - "*.yaml"
+      - "**/*.yaml"
+    cmds:
+      - task: nestedSchemas
+      - helm schema --use-helm-docs --bundle --bundle-without-id --k8s-schema-version=v1.35.1
+
+  dev:
+    desc: Run the schema, docs and tests
+    watch: true
+    sources:
+      - "*.yaml"
+      - "**/*.yaml"
+    cmds:
+      - task: schema
+      - task: test
+
   release:
     env:
-      TAG: '{{ .TAG }}'
+      TAG: "{{ .TAG }}"
     preconditions:
       - sh: "[[ ! -z $TAG ]]"
         msg: Please set the tag

@@ -1,0 +1,12 @@
+---
+# @schema type:[string]
+path: ""
+
+# @schema type:[integer, string]
+port: ""
+
+# @schema itemRef: $k8s/_definitions.json#/definitions/io.k8s.api.core.v1.HTTPHeader
+httpHeaders: []
+
+# @schema item: string
+command: []

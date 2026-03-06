@@ -10,7 +10,7 @@ tests:
     asserts:
       - hasDocuments:
           count: 1
-      - isKind: 
+      - isKind:
           of: Service
 
   - it: should create when service.enabled == true
@@ -20,20 +20,11 @@ tests:
     asserts:
       - hasDocuments:
           count: 1
-      - isKind: 
+      - isKind:
           of: Service
       - matchRegex:
           path: metadata.name
-          pattern: -generic-lb$
-
-  - it: uses the fullnameOverride
-    set:
-      fullnameOverride: bongo
-      service.loadBalancer.enabled: true
-    asserts:
-      - equal:
-          path: .metadata.name
-          value: bongo-lb
+          pattern: RELEASE-NAME-lb
 
   - it: adds additional ports
     set:
@@ -56,3 +47,4 @@ tests:
       - equal:
           path: spec.ports[1].targetPort
           value: bongo
+

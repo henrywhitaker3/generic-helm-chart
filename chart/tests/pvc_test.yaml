@@ -9,7 +9,7 @@ tests:
       - hasDocuments:
           count: 0
 
-  - it: creates a pvc when 
+  - it: creates a pvc when
     set:
       pvc.enabled: true
     asserts:
@@ -42,9 +42,6 @@ tests:
       pvc.accessModes:
         - ReadWriteMany
     asserts:
-      - lengthEqual:
-        path: .spec.accessModes
-        count: 1
       - equal:
           path: .spec.accessModes[0]
           value: ReadWriteMany

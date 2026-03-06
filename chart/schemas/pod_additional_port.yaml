@@ -1,0 +1,9 @@
+---
+# @schema type:[string]
+name: ""
+
+# @schema type:[integer]
+containerPort: 80
+
+# @schema enum:[TCP, UDP]
+protocol: TCP

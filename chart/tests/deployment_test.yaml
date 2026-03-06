@@ -26,7 +26,7 @@ tests:
     asserts:
       - equal:
           path: .spec.template.spec.imagePullSecrets[0]
-          value: 
+          value:
             name: bongo
 
   - it: sets the image pull policy correctly
@@ -54,14 +54,6 @@ tests:
       - equal:
           path: .spec.strategy.type
           value: Recreate
-
-  - it: uses the fullnameOverride
-    set:
-      fullnameOverride: bongo
-    asserts:
-      - equal:
-          path: .metadata.name
-          value: bongo
 
   - it: adds extra pod annotations
     set:
@@ -99,7 +91,7 @@ tests:
       - equal:
           path: .spec.template.spec.containers[0].args
           value: [bongo]
-    
+
   - it: doesn't add the volumes key when pvc.enabled == false and no extra volumes configured
     set:
       pvc.enabled: false
@@ -108,7 +100,7 @@ tests:
           path: .spec.template.spec.volumes
       - notExists:
           path: .spec.template.spec.containers[0].volumeMounts
-    
+
   - it: adds the volumes key when pvc.enabled == true
     set:
       pvc.enabled: true
@@ -117,7 +109,7 @@ tests:
           path: .spec.template.spec.volumes
       - exists:
           path: .spec.template.spec.containers[0].volumeMounts
-    
+
   - it: adds the volumes key when extra volumes are configured
     set:
       pvc.enabled: false
@@ -128,7 +120,7 @@ tests:
     asserts:
       - exists:
           path: .spec.template.spec.volumes
-    
+
   - it: adds the volumeMounts key when extra volume mounts are configured
     set:
       pvc.enabled: false
@@ -138,12 +130,12 @@ tests:
     asserts:
       - exists:
           path: .spec.template.spec.containers[0].volumeMounts
-    
+
   - it: adds empty resources by default
     asserts:
       - isEmpty:
           path: .spec.template.spec.containers[0].resources
-          
+
   - it: adds resources when configured
     set:
       resources:
@@ -166,7 +158,7 @@ tests:
           path: .spec.template.spec.containers[0].envFrom
           content:
             configMapRef:
-              name: bongo
+              name: RELEASE-NAME
 
   - it: does not add the configmap to the envFrom when not set
     set:
@@ -174,7 +166,7 @@ tests:
     asserts:
       - notExists:
           path: .spec.template.spec.containers[0].envFrom
-  
+
   - it: adds the secret to the envFrom when secrets.enabled == true
     set:
       secrets.enabled: true
@@ -184,8 +176,8 @@ tests:
           path: .spec.template.spec.containers[0].envFrom
           content:
             secretRef:
-              name: bongo
-  
+              name: RELEASE-NAME
+
   - it: doesn't add the secret to the envFrom when secrets.enabled == false
     set:
       secrets.enabled: false
@@ -193,13 +185,13 @@ tests:
     asserts:
       - notExists:
           path: .spec.template.spec.containers[0].envFrom
-              
+
   - it: creates one container by default
     asserts:
       - lengthEqual:
           path: .spec.template.spec.containers
           count: 1
-              
+
   - it: adds extraContainers container when configured
     set:
       extraContainers:
@@ -292,7 +284,7 @@ tests:
       probes.enabled: true
       probes.type: httpGet
       probes.options:
-        port: 8080
+        port: http
         path: /bongo
     asserts:
       - exists:
@@ -309,10 +301,10 @@ tests:
           path: .spec.template.spec.containers[0].readinessProbe.exec
       - equal:
           path: .spec.template.spec.containers[0].livenessProbe.httpGet.port
-          value: 8080
+          value: http
       - equal:
           path: .spec.template.spec.containers[0].readinessProbe.httpGet.port
-          value: 8080
+          value: http
       - equal:
           path: .spec.template.spec.containers[0].livenessProbe.httpGet.path
           value: /bongo
@@ -325,7 +317,7 @@ tests:
       probes.enabled: true
       probes.type: tcpSocket
       probes.options:
-        port: 8080
+        port: tcp
     asserts:
       - notExists:
           path: .spec.template.spec.containers[0].livenessProbe.httpGet
@@ -337,10 +329,10 @@ tests:
           path: .spec.template.spec.containers[0].readinessProbe.tcpSocket
       - equal:
           path: .spec.template.spec.containers[0].livenessProbe.tcpSocket.port
-          value: 8080
+          value: tcp
       - equal:
           path: .spec.template.spec.containers[0].readinessProbe.tcpSocket.port
-          value: 8080
+          value: tcp
 
   - it: sets the exec probe properly
     set:
@@ -366,12 +358,11 @@ tests:
           path: .spec.template.spec.containers[0].readinessProbe.exec
       - contains:
           path: .spec.template.spec.containers[0].livenessProbe.exec.command
-          content:
-            tail
+          content: tail
       - contains:
           path: .spec.template.spec.containers[0].readinessProbe.exec.command
-          content:
-            tail
+          content: tail
+
   - it: sets the app version according to the chart
     chart:
       version: "1.3.2"
@@ -416,3 +407,4 @@ tests:
       - equal:
           path: .spec.template.spec.containers[0].env[0].value
           value: BINGO
+

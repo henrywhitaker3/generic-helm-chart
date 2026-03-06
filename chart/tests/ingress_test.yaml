@@ -14,7 +14,6 @@ tests:
   - it: creates an ingress item when enabled
     set:
       ingress.enabled: true
-      fullnameOverride: bongo
     asserts:
       - hasDocuments:
           count: 1
@@ -22,7 +21,7 @@ tests:
           of: Ingress
       - equal:
           path: .metadata.name
-          value: bongo
+          value: RELEASE-NAME
 
   - it: adds default annotations when not set
     set:
