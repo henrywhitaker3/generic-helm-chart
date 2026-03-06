@@ -3,7 +3,7 @@
     "type": "object",
     "properties": {
         "generic": {
-            "$ref": "#/$defs/values.schema.json/properties",
+            "$ref": "#/$defs/values.schema.json",
             "type": "object"
         }
     },
