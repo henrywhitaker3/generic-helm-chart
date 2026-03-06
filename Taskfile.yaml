@@ -16,6 +16,11 @@ tasks:
           helm schema --use-helm-docs --bundle --bundle-without-id --k8s-schema-version=v1.35.1 -f "$file" -o "${file%.*}.schema.json"
         done
 
+  docs:
+    desc: Generate the readme
+    cmds:
+      - helm-docs
+
   schema:
     desc: Generate the schema for the chart
     dir: chart
