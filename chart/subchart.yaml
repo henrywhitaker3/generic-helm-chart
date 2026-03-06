@@ -1,0 +1,3 @@
+---
+# @schema $ref: file://values.schema.json
+generic: {}
