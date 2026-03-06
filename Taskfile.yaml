@@ -25,7 +25,6 @@ tasks:
     cmds:
       - task: nestedSchemas
       - helm schema --use-helm-docs --bundle --bundle-without-id --k8s-schema-version=v1.35.1
-      - helm schema --use-helm-docs --bundle --bundle-without-id --k8s-schema-version=v1.35.1 -f subchart.yaml -o subchart.schema.json
 
   dev:
     desc: Run the schema, docs and tests
