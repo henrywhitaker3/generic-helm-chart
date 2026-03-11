@@ -101,32 +101,7 @@
                 "rules": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/$defs/httproute_v1.json/properties/spec/properties/rules/items/properties",
-                        "type": "object",
-                        "properties": {
-                            "matches": {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "path": {
-                                            "type": "object",
-                                            "properties": {
-                                                "type": {
-                                                    "type": "string"
-                                                },
-                                                "value": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            "port": {
-                                "type": "string"
-                            }
-                        }
+                        "$ref": "#/$defs/httproute_v1.json/properties/spec/properties/rules/items/properties"
                     }
                 }
             },

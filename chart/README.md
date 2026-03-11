@@ -15,7 +15,7 @@ A generic Helm chart for Kubernetes deployments
 | entrypoint | object | `{"args":[],"command":[]}` | Override the entrypoint and args |
 | env | list | `[]` | Specify any extra env fields |
 | extraContainers | list | `[]` | Specify any extra container in the pod |
-| httpRoute | object | `{"annotations":{},"enabled":false,"hostnames":[],"labels":{},"parentRefs":[],"rules":[{"matches":[{"path":{"type":"Prefix","value":"/"}}],"port":"http"}]}` | Configure HTTPRoute resources for the service |
+| httpRoute | object | `{"annotations":{},"enabled":false,"hostnames":[],"labels":{},"parentRefs":[],"rules":[{"matches":[{"path":{"type":"Prefix","value":"/"}}],"port":8080}]}` | Configure HTTPRoute resources for the service |
 | httpRoute.hostnames | list | `[]` | The hostnames the route listens on |
 | image | object | `{"pullPolicy":"IfNotPresent","repository":"nginx","tag":"","token":""}` | Configure the image used by the deployment |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |

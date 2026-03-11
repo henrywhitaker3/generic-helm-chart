@@ -164,12 +164,7 @@ httpRoute:
   parentRefs: []
 
   # @schema itemRef: https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/gateway.networking.k8s.io/httproute_v1.json#/properties/spec/properties/rules/items/properties
-  rules:
-    - port: http
-      matches:
-        - path:
-            type: Prefix
-            value: /
+  rules: []
 
 # @schema $ref: $k8s/_definitions.json#definitions/io.k8s.api.core.v1.ResourceRequirements
 resources: {}

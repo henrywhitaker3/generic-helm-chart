@@ -49,8 +49,13 @@ tasks:
     cmds:
       - yq -i '.version = strenv(TAG)' chart/Chart.yaml
       - sleep 1
+      - task: schema
+      - task: docs
       - git add chart/Chart.yaml
-      - git commit -m "Updated chart to v$TAG"
+      - git add chart/values.schema.json || true
+      - git add chart/README.md || true
+      - |
+        git commit -m "chore: update to v$TAG"
       - git push
       - git tag "v$TAG"
       - git push origin "v$TAG"
