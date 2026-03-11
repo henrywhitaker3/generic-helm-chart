@@ -9,6 +9,7 @@ jobs:
   release:
     permissions:
       packages: write
+      pages: write
 
     runs-on: ubuntu-latest
 
@@ -26,4 +27,17 @@ jobs:
           registry: ghcr.io
           registry_username: ${{ github.actor }}
           registry_password: ${{ secrets.GITHUB_TOKEN }}
-          update_dependencies: 'true'
+          update_dependencies: "true"
+
+      - name: Copy Schemas
+        run: |
+          mkdir schemas
+          cp chart/values.schema.json schemas
+          cp chart/subchart.schema.json schemas
+      - name: Upload schemas
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./schemas
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
