@@ -27,3 +27,5 @@ generic:
 ```sh
 helm install example oci://ghcr.io/henrywhitaker3/generic --version {{ template "chart.version" . }}
 ```
+
+{{ template "chart.valuesSection" . }}
