@@ -26,7 +26,7 @@ tasks:
     dir: chart
     cmds:
       - cp values.schema.json tmp.schema.json
-      - jq '.tmp = .properties | del(.properties) | .properties.generic = .tmp | del(.tmp) | .properties.additionalProperties = false' tmp.schema.json > subchart.schema.json
+      - jq '.tmp = .properties | del(.properties) | .properties.generic.properties = .tmp | del(.tmp) | .properties.generic.additionalProperties = false' tmp.schema.json > subchart.schema.json
       - rm tmp.schema.json
 
   schema:

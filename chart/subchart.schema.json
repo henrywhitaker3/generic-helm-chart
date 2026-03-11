@@ -4700,604 +4700,606 @@
   },
   "properties": {
     "generic": {
-      "additionalPorts": {
-        "description": "Specify any addtional ports on the container",
-        "type": "array",
-        "items": {
-          "$ref": "#/$defs/pod_additional_port.schema.json"
-        }
-      },
-      "affinity": {
-        "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.Affinity",
-        "type": "object"
-      },
-      "config": {
-        "description": "Specify any values to add to the configmap",
-        "type": "object",
-        "additionalProperties": {
-          "type": "string"
-        }
-      },
-      "deploymentStrategy": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "RollingUpdate",
-              "Recreate"
-            ]
+      "properties": {
+        "additionalPorts": {
+          "description": "Specify any addtional ports on the container",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pod_additional_port.schema.json"
           }
         },
-        "additionalProperties": false
-      },
-      "entrypoint": {
-        "description": "Override the entrypoint and args",
-        "type": "object",
-        "properties": {
-          "args": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "command": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+        "affinity": {
+          "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.Affinity",
+          "type": "object"
+        },
+        "config": {
+          "description": "Specify any values to add to the configmap",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
           }
         },
-        "additionalProperties": false
-      },
-      "env": {
-        "description": "Specify any extra env fields",
-        "type": "array",
-        "items": {
-          "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.EnvVar"
-        }
-      },
-      "extraContainers": {
-        "description": "Specify any extra container in the pod",
-        "type": "array",
-        "items": {
-          "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.Container"
-        }
-      },
-      "httpRoute": {
-        "description": "Configure HTTPRoute resources for the service",
-        "type": "object",
-        "properties": {
-          "annotations": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
+        "deploymentStrategy": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "RollingUpdate",
+                "Recreate"
+              ]
             }
           },
-          "enabled": {
-            "type": "boolean"
-          },
-          "hostnames": {
-            "description": "The hostnames the route listens on",
-            "type": "array",
-            "items": {
-              "type": "string"
+          "additionalProperties": false
+        },
+        "entrypoint": {
+          "description": "Override the entrypoint and args",
+          "type": "object",
+          "properties": {
+            "args": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "command": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
-          "labels": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "parentRefs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/$defs/httproute_v1.json/properties/spec/properties/parentRefs/items/properties"
-            }
-          },
-          "rules": {
-            "type": "array",
-            "items": {
-              "$ref": "#/$defs/httproute_v1.json/properties/spec/properties/rules/items/properties",
+          "additionalProperties": false
+        },
+        "env": {
+          "description": "Specify any extra env fields",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.EnvVar"
+          }
+        },
+        "extraContainers": {
+          "description": "Specify any extra container in the pod",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.Container"
+          }
+        },
+        "httpRoute": {
+          "description": "Configure HTTPRoute resources for the service",
+          "type": "object",
+          "properties": {
+            "annotations": {
               "type": "object",
-              "properties": {
-                "matches": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "path": {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string"
-                          },
-                          "value": {
-                            "type": "string"
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "hostnames": {
+              "description": "The hostnames the route listens on",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "labels": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "parentRefs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/httproute_v1.json/properties/spec/properties/parentRefs/items/properties"
+              }
+            },
+            "rules": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/httproute_v1.json/properties/spec/properties/rules/items/properties",
+                "type": "object",
+                "properties": {
+                  "matches": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "string"
+                            }
                           }
                         }
                       }
                     }
+                  },
+                  "port": {
+                    "type": "string"
                   }
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "image": {
+          "description": "Configure the image used by the deployment",
+          "type": "object",
+          "properties": {
+            "pullPolicy": {
+              "type": "string",
+              "enum": [
+                "IfNotPresent",
+                "Always",
+                "Never"
+              ]
+            },
+            "repository": {
+              "type": "string"
+            },
+            "tag": {
+              "description": "Overrides the image tag whose default is the chart appVersion.",
+              "type": "string"
+            },
+            "token": {
+              "description": "Specify an optional secret with the registry authentication token",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ingress": {
+          "description": "Configure Ingress resources for the service",
+          "type": "object",
+          "properties": {
+            "annotations": {
+              "type": "object",
+              "properties": {
+                "kubernetes.io/tls-acme": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "className": {
+              "description": "Specify the className of the ingress",
+              "type": "string"
+            },
+            "enabled": {
+              "description": "Specify whether to enable the ingress",
+              "type": "boolean"
+            },
+            "hosts": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.networking.v1.IngressRule"
+              }
+            },
+            "tls": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.networking.v1.IngressTLS"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "initContainers": {
+          "description": "Specify any initContainer for the pod",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.Container"
+          }
+        },
+        "jobs": {
+          "type": "array"
+        },
+        "metrics": {
+          "description": "Setup ServiceMonitors for the deployment",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "honorLabels": {
+              "type": "boolean"
+            },
+            "interval": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            },
+            "port": {
+              "type": [
+                "string",
+                "integer"
+              ]
+            },
+            "timeout": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "nodeSelector": {
+          "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.NodeSelector/properties",
+          "type": "object"
+        },
+        "podAnnotations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "podSecurityContext": {
+          "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.PodSecurityContext",
+          "type": "object"
+        },
+        "probes": {
+          "description": "Configure probes for the deployment",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "description": "Specifies whether or not to add probes to the deployment",
+              "type": "boolean"
+            },
+            "failureThreshold": {
+              "type": "integer"
+            },
+            "initialDelaySeconds": {
+              "type": "integer"
+            },
+            "options": {
+              "description": "Configure options for the probe kind",
+              "$ref": "#/$defs/probes_options.schema.json",
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
                 },
                 "port": {
                   "type": "string"
                 }
               }
+            },
+            "periodSeconds": {
+              "type": "integer"
+            },
+            "successThreshold": {
+              "type": "integer"
+            },
+            "timeoutSeconds": {
+              "type": "integer"
+            },
+            "type": {
+              "description": "Specify the probe type",
+              "type": "string",
+              "enum": [
+                "httpGet",
+                "tcpSocket",
+                "exec"
+              ]
             }
-          }
+          },
+          "additionalProperties": false
         },
-        "additionalProperties": false
-      },
-      "image": {
-        "description": "Configure the image used by the deployment",
-        "type": "object",
-        "properties": {
-          "pullPolicy": {
-            "type": "string",
-            "enum": [
-              "IfNotPresent",
-              "Always",
-              "Never"
-            ]
-          },
-          "repository": {
-            "type": "string"
-          },
-          "tag": {
-            "description": "Overrides the image tag whose default is the chart appVersion.",
-            "type": "string"
-          },
-          "token": {
-            "description": "Specify an optional secret with the registry authentication token",
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ingress": {
-        "description": "Configure Ingress resources for the service",
-        "type": "object",
-        "properties": {
-          "annotations": {
-            "type": "object",
-            "properties": {
-              "kubernetes.io/tls-acme": {
+        "pvc": {
+          "type": "object",
+          "properties": {
+            "accessModes": {
+              "description": "Specify the access modes for the pvc",
+              "type": "array",
+              "items": {
                 "type": "string"
               }
             },
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "className": {
-            "description": "Specify the className of the ingress",
-            "type": "string"
-          },
-          "enabled": {
-            "description": "Specify whether to enable the ingress",
-            "type": "boolean"
-          },
-          "hosts": {
-            "type": "array",
-            "items": {
-              "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.networking.v1.IngressRule"
-            }
-          },
-          "tls": {
-            "type": "array",
-            "items": {
-              "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.networking.v1.IngressTLS"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "initContainers": {
-        "description": "Specify any initContainer for the pod",
-        "type": "array",
-        "items": {
-          "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.Container"
-        }
-      },
-      "jobs": {
-        "type": "array"
-      },
-      "metrics": {
-        "description": "Setup ServiceMonitors for the deployment",
-        "type": "object",
-        "properties": {
-          "enabled": {
-            "type": "boolean"
-          },
-          "honorLabels": {
-            "type": "boolean"
-          },
-          "interval": {
-            "type": "string"
-          },
-          "path": {
-            "type": "string"
-          },
-          "port": {
-            "type": [
-              "string",
-              "integer"
-            ]
-          },
-          "timeout": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "nodeSelector": {
-        "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.NodeSelector/properties",
-        "type": "object"
-      },
-      "podAnnotations": {
-        "type": "object",
-        "additionalProperties": {
-          "type": "string"
-        }
-      },
-      "podSecurityContext": {
-        "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.PodSecurityContext",
-        "type": "object"
-      },
-      "probes": {
-        "description": "Configure probes for the deployment",
-        "type": "object",
-        "properties": {
-          "enabled": {
-            "description": "Specifies whether or not to add probes to the deployment",
-            "type": "boolean"
-          },
-          "failureThreshold": {
-            "type": "integer"
-          },
-          "initialDelaySeconds": {
-            "type": "integer"
-          },
-          "options": {
-            "description": "Configure options for the probe kind",
-            "$ref": "#/$defs/probes_options.schema.json",
-            "type": "object",
-            "properties": {
-              "path": {
-                "type": "string"
-              },
-              "port": {
-                "type": "string"
-              }
-            }
-          },
-          "periodSeconds": {
-            "type": "integer"
-          },
-          "successThreshold": {
-            "type": "integer"
-          },
-          "timeoutSeconds": {
-            "type": "integer"
-          },
-          "type": {
-            "description": "Specify the probe type",
-            "type": "string",
-            "enum": [
-              "httpGet",
-              "tcpSocket",
-              "exec"
-            ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "pvc": {
-        "type": "object",
-        "properties": {
-          "accessModes": {
-            "description": "Specify the access modes for the pvc",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "enabled": {
-            "description": "Specifies whether to create a PVC",
-            "type": "boolean"
-          },
-          "mountPath": {
-            "description": "Specify the path in the container to mount the pvc",
-            "type": "string"
-          },
-          "size": {
-            "description": "Specify the size of the PVC",
-            "$ref": "#/$defs/_definitions.json/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity",
-            "type": "string"
-          },
-          "storageClassName": {
-            "description": "Specify the storageclass of the pvc",
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "replicaCount": {
-        "description": "The number of replicas of the deployment",
-        "type": "integer",
-        "minimum": 1
-      },
-      "resources": {
-        "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.ResourceRequirements",
-        "type": "object"
-      },
-      "secrets": {
-        "description": "The external-secrets item",
-        "type": "object",
-        "properties": {
-          "enabled": {
-            "description": "Specify whether to create an external-secrets item",
-            "type": "boolean"
-          },
-          "key": {
-            "description": "Specify the key external-secrets shoudl pull data form",
-            "type": "string"
-          },
-          "secretStoreRef": {
-            "type": "object",
-            "properties": {
-              "kind": {
-                "type": "string",
-                "enum": [
-                  "SecretStore",
-                  "ClusterSecretStore"
-                ]
-              },
-              "name": {
-                "type": "string"
-              }
+            "enabled": {
+              "description": "Specifies whether to create a PVC",
+              "type": "boolean"
             },
-            "additionalProperties": false
-          }
-        },
-        "additionalProperties": false
-      },
-      "securityContext": {
-        "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.SecurityContext",
-        "type": "object"
-      },
-      "service": {
-        "description": "Configure the service",
-        "type": "object",
-        "properties": {
-          "additionalPorts": {
-            "description": "Specify any additional ports for the service",
-            "type": "array",
-            "items": {
-              "$ref": "#/$defs/service_additional_ports.schema.json"
-            }
-          },
-          "enabled": {
-            "description": "Specifies whether or not to create a service",
-            "type": "boolean"
-          },
-          "loadBalancer": {
-            "description": "Optionally configure properties for an additional LoadBalancer service",
-            "type": "object",
-            "properties": {
-              "enabled": {
-                "description": "Specifies whether to create an additional service with type LoadBalancer",
-                "type": "boolean"
-              },
-              "externalTrafficPolicy": {
-                "description": "Specify the externalTrafficPolicy of the service",
-                "type": "string",
-                "enum": [
-                  "Cluster",
-                  "Local"
-                ]
-              },
-              "ip": {
-                "type": "string"
-              }
+            "mountPath": {
+              "description": "Specify the path in the container to mount the pvc",
+              "type": "string"
             },
-            "additionalProperties": false
-          },
-          "port": {
-            "description": "Specifies the port of the service",
-            "type": "integer"
-          },
-          "portName": {
-            "description": "Specifies the name of the port",
-            "type": "string"
-          },
-          "type": {
-            "description": "Specifies the type of the service",
-            "default": "ClusterIP",
-            "type": "string",
-            "enum": [
-              "ExternalName",
-              "ClusterIP",
-              "NodePort",
-              "and LoadBalancer"
-            ]
-          }
-        },
-        "additionalProperties": false
-      },
-      "serviceAccount": {
-        "type": "object",
-        "properties": {
-          "annotations": {
-            "description": "Annotations to add to the service account",
-            "type": "object",
-            "additionalProperties": {
+            "size": {
+              "description": "Specify the size of the PVC",
+              "$ref": "#/$defs/_definitions.json/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity",
+              "type": "string"
+            },
+            "storageClassName": {
+              "description": "Specify the storageclass of the pvc",
               "type": "string"
             }
           },
-          "create": {
-            "description": "Specifies whether a service account should be created",
-            "type": "boolean"
-          },
-          "name": {
-            "description": "The name of the service account to use. If not set and create is true, a name is generated using the fullname template",
-            "type": "string"
-          }
+          "additionalProperties": false
         },
-        "additionalProperties": false
-      },
-      "tolerations": {
-        "type": "array",
-        "items": {
-          "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.Toleration"
-        }
-      },
-      "volumeMounts": {
-        "description": "Specify any additional volume mounts",
-        "type": "array",
-        "items": {
-          "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.VolumeMount"
-        }
-      },
-      "volumes": {
-        "description": "Specify any additional volumes",
-        "type": "array",
-        "items": {
-          "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.Volume"
-        }
-      },
-      "vpn": {
-        "description": "Add a sidecar that connects to a wireguard vpn and routes pod traffic through it",
-        "type": "object",
-        "properties": {
-          "enabled": {
-            "description": "Specify whether to enable a VPN sidecar",
-            "type": "boolean"
-          },
-          "env": {
-            "type": "array",
-            "items": {
-              "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.EnvVar",
+        "replicaCount": {
+          "description": "The number of replicas of the deployment",
+          "type": "integer",
+          "minimum": 1
+        },
+        "resources": {
+          "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.ResourceRequirements",
+          "type": "object"
+        },
+        "secrets": {
+          "description": "The external-secrets item",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "description": "Specify whether to create an external-secrets item",
+              "type": "boolean"
+            },
+            "key": {
+              "description": "Specify the key external-secrets shoudl pull data form",
+              "type": "string"
+            },
+            "secretStoreRef": {
               "type": "object",
               "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "SecretStore",
+                    "ClusterSecretStore"
+                  ]
+                },
                 "name": {
                   "type": "string"
-                },
-                "value": {
-                  "type": "string"
                 }
-              }
+              },
+              "additionalProperties": false
             }
           },
-          "image": {
-            "type": "object",
-            "properties": {
-              "pullPolicy": {
-                "type": "string",
-                "enum": [
-                  "IfNotPresent",
-                  "Always",
-                  "Never"
-                ]
-              },
-              "repository": {
-                "type": "string"
-              },
-              "tag": {
-                "type": "string"
+          "additionalProperties": false
+        },
+        "securityContext": {
+          "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.SecurityContext",
+          "type": "object"
+        },
+        "service": {
+          "description": "Configure the service",
+          "type": "object",
+          "properties": {
+            "additionalPorts": {
+              "description": "Specify any additional ports for the service",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/service_additional_ports.schema.json"
               }
             },
-            "additionalProperties": false
-          },
-          "probes": {
-            "type": "object",
-            "properties": {
-              "enabled": {
-                "type": "boolean"
-              },
-              "exec": {
-                "type": "array",
-                "items": {
+            "enabled": {
+              "description": "Specifies whether or not to create a service",
+              "type": "boolean"
+            },
+            "loadBalancer": {
+              "description": "Optionally configure properties for an additional LoadBalancer service",
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "description": "Specifies whether to create an additional service with type LoadBalancer",
+                  "type": "boolean"
+                },
+                "externalTrafficPolicy": {
+                  "description": "Specify the externalTrafficPolicy of the service",
+                  "type": "string",
+                  "enum": [
+                    "Cluster",
+                    "Local"
+                  ]
+                },
+                "ip": {
                   "type": "string"
                 }
-              }
+              },
+              "additionalProperties": false
             },
-            "additionalProperties": false
-          },
-          "script": {
-            "description": "Scripts to run to copy over the wirguard config",
-            "type": "string"
-          },
-          "secret": {
-            "description": "external-secrets config for the wireguard secret",
-            "type": "object",
-            "properties": {
-              "enabled": {
-                "type": "boolean"
-              },
-              "key": {
-                "description": "The key external secrets uses to pull in the wireguard configs",
-                "type": "string"
-              },
-              "mount": {
-                "type": "object",
-                "properties": {
-                  "enabled": {
-                    "description": "Specify whether to mount the secret in to container",
-                    "type": "boolean"
-                  },
-                  "path": {
-                    "description": "Specify the path to mount the secret to",
-                    "type": "string"
-                  }
-                },
-                "additionalProperties": false
-              },
-              "secretStoreRef": {
-                "type": "object",
-                "properties": {
-                  "kind": {
-                    "type": "string",
-                    "enum": [
-                      "ClusterSecretStore",
-                      "SecretStore"
-                    ]
-                  },
-                  "name": {
-                    "type": "string"
-                  }
-                },
-                "additionalProperties": false
-              }
+            "port": {
+              "description": "Specifies the port of the service",
+              "type": "integer"
             },
-            "additionalProperties": false
-          },
-          "securityContext": {
-            "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.PodSecurityContext",
-            "type": "object",
-            "properties": {
-              "capabilities": {
-                "type": "object",
-                "properties": {
-                  "add": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              },
-              "privileged": {
-                "type": "boolean"
-              }
+            "portName": {
+              "description": "Specifies the name of the port",
+              "type": "string"
+            },
+            "type": {
+              "description": "Specifies the type of the service",
+              "default": "ClusterIP",
+              "type": "string",
+              "enum": [
+                "ExternalName",
+                "ClusterIP",
+                "NodePort",
+                "and LoadBalancer"
+              ]
             }
+          },
+          "additionalProperties": false
+        },
+        "serviceAccount": {
+          "type": "object",
+          "properties": {
+            "annotations": {
+              "description": "Annotations to add to the service account",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "create": {
+              "description": "Specifies whether a service account should be created",
+              "type": "boolean"
+            },
+            "name": {
+              "description": "The name of the service account to use. If not set and create is true, a name is generated using the fullname template",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "tolerations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.Toleration"
           }
         },
-        "additionalProperties": false
-      }
-    },
-    "additionalProperties": false
+        "volumeMounts": {
+          "description": "Specify any additional volume mounts",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.VolumeMount"
+          }
+        },
+        "volumes": {
+          "description": "Specify any additional volumes",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.Volume"
+          }
+        },
+        "vpn": {
+          "description": "Add a sidecar that connects to a wireguard vpn and routes pod traffic through it",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "description": "Specify whether to enable a VPN sidecar",
+              "type": "boolean"
+            },
+            "env": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.EnvVar",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "image": {
+              "type": "object",
+              "properties": {
+                "pullPolicy": {
+                  "type": "string",
+                  "enum": [
+                    "IfNotPresent",
+                    "Always",
+                    "Never"
+                  ]
+                },
+                "repository": {
+                  "type": "string"
+                },
+                "tag": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "probes": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "exec": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "script": {
+              "description": "Scripts to run to copy over the wirguard config",
+              "type": "string"
+            },
+            "secret": {
+              "description": "external-secrets config for the wireguard secret",
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "key": {
+                  "description": "The key external secrets uses to pull in the wireguard configs",
+                  "type": "string"
+                },
+                "mount": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "description": "Specify whether to mount the secret in to container",
+                      "type": "boolean"
+                    },
+                    "path": {
+                      "description": "Specify the path to mount the secret to",
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "secretStoreRef": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "ClusterSecretStore",
+                        "SecretStore"
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "securityContext": {
+              "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.PodSecurityContext",
+              "type": "object",
+              "properties": {
+                "capabilities": {
+                  "type": "object",
+                  "properties": {
+                    "add": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "privileged": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
   }
 }
