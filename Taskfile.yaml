@@ -21,21 +21,12 @@ tasks:
     cmds:
       - helm-docs
 
-  subchartSchema:
-    desc: Generate the subchart schema from the plain schema
-    dir: chart
-    cmds:
-      - cp values.schema.json tmp.schema.json
-      - jq '.tmp = .properties | del(.properties) | .properties.generic.properties = .tmp | del(.tmp) | .properties.generic.additionalProperties = false' tmp.schema.json > subchart.schema.json
-      - rm tmp.schema.json
-
   schema:
     desc: Generate the schema for the chart
     dir: chart
     cmds:
       - task: nestedSchemas
       - helm schema --use-helm-docs --bundle --bundle-without-id --k8s-schema-version=v1.35.1
-      - task: subchartSchema
 
   dev:
     desc: Run the schema, docs and tests
