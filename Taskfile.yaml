@@ -19,7 +19,7 @@ tasks:
   docs:
     desc: Generate the readme
     cmds:
-      - helm-docs
+      - helm-docs --template-files README.tpl.md
 
   schema:
     desc: Generate the schema for the chart

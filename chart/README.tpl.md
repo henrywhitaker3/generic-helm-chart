@@ -1,6 +1,5 @@
-# generic
-
-A generic Helm chart for Kubernetes deployments
+{{ template "chart.header" . }}
+{{ template "chart.description" . }}
 
 ## Usage
 
@@ -13,7 +12,7 @@ A generic Helm chart for Kubernetes deployments
 ```
 
 ```sh
-helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.3
+helm install example oci://ghcr.io/henrywhitaker3/generic --version {{ template "chart.version" . }}
 ```
 
 ### Sub-chart
