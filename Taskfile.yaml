@@ -18,6 +18,7 @@ tasks:
 
   docs:
     desc: Generate the readme
+    dir: chart
     cmds:
       - helm-docs --template-files README.tpl.md
 

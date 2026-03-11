@@ -23,3 +23,7 @@ helm install example oci://ghcr.io/henrywhitaker3/generic --version {{ template 
 generic:
   # fill in values here
 ```
+
+```sh
+helm install example oci://ghcr.io/henrywhitaker3/generic --version {{ template "chart.version" . }}
+```

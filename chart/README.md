@@ -24,3 +24,7 @@ helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.3
 generic:
   # fill in values here
 ```
+
+```sh
+helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.3
+```
