@@ -1,0 +1,9 @@
+---
+# @schema type:[integer]
+port:
+
+# @schema itemRef: https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/gateway.networking.k8s.io/httproute_v1.json#properties/spec/properties/rules/items/properties/matches/items
+matches: []
+
+# @schema itemRef: https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/gateway.networking.k8s.io/httproute_v1.json#properties/spec/properties/rules/items/properties/filters/items
+filters: []
