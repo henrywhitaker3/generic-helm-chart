@@ -314,3 +314,18 @@ vpn:
       enabled: true
       # -- Specify the path to mount the secret to
       path: /config/wg_confs
+
+# @schema additionalProperties: false
+# -- Configure a NetworkPolicy for the app
+netpol:
+  enabled: false
+
+  # @schema
+  # -- When true, automatically adds an egress rule to kube-system coredns pods
+  allowCoredns: true
+
+  # @schema itemRef: $k8s/_definitions.json#/definitions/io.k8s.api.networking.v1.NetworkPolicySpec/properties/ingress/items
+  ingress: []
+
+  # @schema itemRef: $k8s/_definitions.json#/definitions/io.k8s.api.networking.v1.NetworkPolicySpec/properties/egress/items
+  egress: []

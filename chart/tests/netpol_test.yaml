@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/refs/heads/main/schema/helm-testsuite.json
+
+suite: netpol suite
+
+templates:
+  - network_policy.yaml
+
+tests:
+  - it: does not render when not enabled
+    set:
+      netpol:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: generates netpol when enabled with no rules
+    set:
+      netpol:
+        enabled: true
+        allowCoredns: true
+    asserts:
+      - equal:
+          path: spec.podSelector.matchLabels["app.kubernetes.io/name"]
+          value: RELEASE-NAME
+      - equal:
+          path: spec.egress[0].to[0].namespaceSelector.matchLabels["kubernetes.io/metadata.name"]
+          value: kube-system
+      - equal:
+          path: spec.egress[0].to[0].podSelector.matchLabels["app.kubernetes.io/name"]
+          value: coredns
+      - lengthEqual:
+          path: spec.policyTypes
+          count: 1
+      - equal:
+          path: spec.policyTypes[0]
+          value: Egress
+
+  - it: adds ingress rules
+    set:
+      netpol:
+        enabled: true
+        allowCoredns: false
+        ingress:
+          - from:
+              - podSelector:
+                  matchLabels:
+                    bongo: bingo
+    asserts:
+      - lengthEqual:
+          path: spec.policyTypes
+          count: 1
+      - equal:
+          path: spec.policyTypes[0]
+          value: Ingress
+      - lengthEqual:
+          path: spec.ingress
+          count: 1
+      - equal:
+          path: spec.ingress[0].from[0].podSelector.matchLabels.bongo
+          value: bingo
+
+  - it: adds egress rules
+    set:
+      netpol:
+        enabled: true
+        allowCoredns: false
+        egress:
+          - to:
+              - podSelector:
+                  matchLabels:
+                    bongo: bingo
+    asserts:
+      - lengthEqual:
+          path: spec.policyTypes
+          count: 1
+      - equal:
+          path: spec.policyTypes[0]
+          value: Egress
+      - lengthEqual:
+          path: spec.egress
+          count: 1
+      - equal:
+          path: spec.egress[0].to[0].podSelector.matchLabels.bongo
+          value: bingo

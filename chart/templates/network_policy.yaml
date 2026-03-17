@@ -1,0 +1,52 @@
+{{- if .Values.netpol.enabled }}
+{{- $hasIngress := (gt (len .Values.netpol.ingress) 0) }}
+{{- $hasEgress := (or (.Values.netpol.allowCoredns) (gt (len .Values.netpol.egress) 0)) }}
+{{- $policyTypes := list }}
+{{- if $hasIngress }}
+{{- $policyTypes = append $policyTypes "Ingress" }}
+{{- end }}
+{{- if $hasEgress }}
+{{- $policyTypes = append $policyTypes "Egress" }}
+{{- end }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "generic.fullname" . }}
+  labels:
+    {{- include "generic.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "generic.selectorLabels" . | nindent 6 }}
+  {{- with $policyTypes }}
+  policyTypes:
+    {{- range . }}
+    - "{{ . }}"
+    {{- end }}
+  {{- end }}
+  {{- with .Values.netpol.ingress }}
+  ingress:
+    {{- . | toYaml | nindent 4 }}
+  {{- end }}
+  {{- if $hasEgress }}
+  egress:
+    {{- if .Values.netpol.allowCoredns }}
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: coredns
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+    {{- end }}
+    {{- with .Values.netpol.egress }}
+    {{- . | toYaml | nindent 4 }}
+    {{- end }}
+  {{- end }}
+{{- end }}

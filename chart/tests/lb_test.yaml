@@ -1,3 +1,6 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/refs/heads/main/schema/helm-testsuite.json
+
 suite: lb test
 
 templates:
@@ -47,4 +50,3 @@ tests:
       - equal:
           path: spec.ports[1].targetPort
           value: bongo
-
