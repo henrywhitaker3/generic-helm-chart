@@ -1,3 +1,6 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/refs/heads/main/schema/helm-testsuite.json
+
 suite: job test
 
 templates:
@@ -86,3 +89,4 @@ tests:
       - equal:
           path: .spec.backoffLimit
           value: 3
+

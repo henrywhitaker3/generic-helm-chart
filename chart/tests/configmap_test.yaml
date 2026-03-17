@@ -1,3 +1,6 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/refs/heads/main/schema/helm-testsuite.json
+
 suite: configmap test
 
 templates:
@@ -8,7 +11,7 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
-  
+
   - it: creates a cm when items in map
     set:
       config:
@@ -19,3 +22,4 @@ tests:
       - equal:
           path: .data.BONGO
           value: bingo
+

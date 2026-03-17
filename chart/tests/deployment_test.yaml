@@ -1,3 +1,6 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/refs/heads/main/schema/helm-testsuite.json
+
 suite: deployment test
 
 templates:
@@ -407,4 +410,3 @@ tests:
       - equal:
           path: .spec.template.spec.containers[0].env[0].value
           value: BINGO
-
