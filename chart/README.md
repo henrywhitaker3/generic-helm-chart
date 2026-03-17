@@ -51,6 +51,8 @@ helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.4
 | initContainers | list | `[]` | Specify any initContainer for the pod |
 | jobs | list | `[]` |  |
 | metrics | object | `{"enabled":false,"honorLabels":false,"interval":"60s","path":"/metrics","port":"http","timeout":"30s"}` | Setup ServiceMonitors for the deployment |
+| netpol | object | `{"allowCoredns":true,"egress":[],"enabled":false,"ingress":[]}` | Configure a NetworkPolicy for the app |
+| netpol.allowCoredns | bool | `true` | When true, automatically adds an egress rule to kube-system coredns pods |
 | nodeSelector | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
