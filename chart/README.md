@@ -13,7 +13,7 @@ A generic Helm chart for Kubernetes deployments
 ```
 
 ```sh
-helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.4
+helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.5
 ```
 
 ### Sub-chart
@@ -26,7 +26,7 @@ generic:
 ```
 
 ```sh
-helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.4
+helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.5
 ```
 
 ## Values
