@@ -13,7 +13,7 @@ A generic Helm chart for Kubernetes deployments
 ```
 
 ```sh
-helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.5
+helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.6
 ```
 
 ### Sub-chart
@@ -26,7 +26,7 @@ generic:
 ```
 
 ```sh
-helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.5
+helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.6
 ```
 
 ## Values
@@ -50,6 +50,7 @@ helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.4.5
 | ingress.enabled | bool | `false` | Specify whether to enable the ingress |
 | initContainers | list | `[]` | Specify any initContainer for the pod |
 | jobs | list | `[]` |  |
+| lifecycle | object | `{}` |  |
 | metrics | object | `{"enabled":false,"honorLabels":false,"interval":"60s","path":"/metrics","port":"http","timeout":"30s"}` | Setup ServiceMonitors for the deployment |
 | netpol | object | `{"allowCoredns":true,"egress":[],"enabled":false,"ingress":[]}` | Configure a NetworkPolicy for the app |
 | netpol.allowCoredns | bool | `true` | When true, automatically adds an egress rule to kube-system coredns pods |

@@ -181,6 +181,10 @@
         "jobs": {
             "type": "array"
         },
+        "lifecycle": {
+            "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.Lifecycle",
+            "type": "object"
+        },
         "metrics": {
             "description": "Setup ServiceMonitors for the deployment",
             "type": "object",
