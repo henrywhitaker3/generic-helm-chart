@@ -44,6 +44,9 @@ podSecurityContext: {}
 # @schema $ref: $k8s/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext
 securityContext: {}
 
+# @schema $ref: $k8s/_definitions.json#/definitions/io.k8s.api.core.v1.Lifecycle
+lifecycle: {}
+
 # @schema additionalProperties: false
 # -- Configure the service
 service:
