@@ -100,6 +100,8 @@ spec:
             {{- include "generic.probes" . | nindent 12 }}
           readinessProbe:
             {{- include "generic.probes" . | nindent 12 }}
+          startupProbe:
+            {{- include "generic.probes" . | nindent 12 }}
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
