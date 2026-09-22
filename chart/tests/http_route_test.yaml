@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/refs/heads/main/schema/helm-testsuite.json
+
+suite: HTTPRoute test
+
+templates:
+  - http_route.yaml
+
+tests:
+  - it: does not create an HTTPRoute when disabled
+    set:
+      httpRoute.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: creates an HTTPRoute rule without session persistence when unset
+    set:
+      httpRoute:
+        enabled: true
+        rules:
+          - {}
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: HTTPRoute
+      - notExists:
+          path: spec.rules[0].sessionPersistence
+
+  - it: adds session persistence to an HTTPRoute rule
+    set:
+      httpRoute:
+        enabled: true
+        rules:
+          - sessionPersistence:
+              type: Cookie
+              sessionName: sticky-session
+              absoluteTimeout: 1h
+              cookieConfig:
+                lifetimeType: Permanent
+    asserts:
+      - equal:
+          path: spec.rules[0].sessionPersistence.type
+          value: Cookie
+      - equal:
+          path: spec.rules[0].sessionPersistence.sessionName
+          value: sticky-session
+      - equal:
+          path: spec.rules[0].sessionPersistence.absoluteTimeout
+          value: 1h
+      - equal:
+          path: spec.rules[0].sessionPersistence.cookieConfig.lifetimeType
+          value: Permanent

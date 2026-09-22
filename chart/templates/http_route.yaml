@@ -40,5 +40,11 @@ spec:
       {{- . | toYaml | nindent 6 }}
     {{- end }}
     {{- end }}
+    {{- if .sessionPersistence }}
+    {{- with .sessionPersistence }}
+    sessionPersistence:
+      {{- . | toYaml | nindent 6 }}
+    {{- end }}
+    {{- end }}
   {{- end }}
 {{- end }}
