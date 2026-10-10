@@ -16,10 +16,10 @@ jobs:
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Push chart
-        uses: appany/helm-oci-chart-releaser@v0.5.0
+        uses: appany/helm-oci-chart-releaser@d94988c92bed2e09c6113981f15f8bb495d10943 # v0.5.0
         with:
           name: generic
           repository: henrywhitaker3
@@ -36,9 +36,9 @@ jobs:
           cp chart/values.schema.json schemas
           cp chart/subchart.schema.json schemas
       - name: Upload schemas
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: ./schemas
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5
