@@ -36,7 +36,7 @@ The version of the application running
 Common labels
 */}}
 {{- define "generic.labels" -}}
-helm.sh/chart: {{ include "generic.chart" . }}
+helm.sh/chart: {{ .Chart.Version }}
 {{ include "generic.selectorLabels" . }}
 app.kubernetes.io/version: {{ include "generic.version" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
