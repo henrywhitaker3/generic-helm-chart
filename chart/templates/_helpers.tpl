@@ -25,11 +25,11 @@ Create chart name and version as used by the chart label.
 The version of the application running
 */}}
 {{- define "generic.version" -}}
+{{- $version := default .Chart.AppVersion .Values.appVersionOverride -}}
 {{- if and (ne .Values.image.tag "latest") .Values.image.tag -}}
-{{- .Values.image.tag }}
-{{- else -}}
-{{- default .Chart.AppVersion .Values.appVersionOverride }}
+{{- $version = .Values.image.tag -}}
 {{- end -}}
+{{- regexReplaceAll "@.*$" $version "" -}}
 {{- end }}
 
 {{/*
