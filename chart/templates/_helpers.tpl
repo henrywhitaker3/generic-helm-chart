@@ -18,7 +18,18 @@ If release name contains chart name it will be used as a full name.
 Create chart name and version as used by the chart label.
 */}}
 {{- define "generic.chart" -}}
-{{- printf "%s-%s" .Chart.Name (default .Chart.Version .Values.versionOverride) | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-%s" .Chart.Name (include "generic.version" . ) | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+The version of the application running
+*/}}
+{{- define "generic.version" -}}
+{{- if and (ne .Values.image.tag "latest") .Values.image.tag -}}
+{{- .Values.image.tag }}
+{{- else -}}
+{{- default .Chart.AppVersion .Values.appVersionOverride }}
+{{- end -}}
 {{- end }}
 
 {{/*
@@ -27,10 +38,16 @@ Common labels
 {{- define "generic.labels" -}}
 helm.sh/chart: {{ include "generic.chart" . }}
 {{ include "generic.selectorLabels" . }}
-{{- if  or (.Chart.AppVersion) (.Values.appVersionOverride) }}
-app.kubernetes.io/version: {{ default .Chart.AppVersion .Values.appVersionOverride | quote }}
-{{- end }}
+app.kubernetes.io/version: {{ include "generic.version" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Labels that pods get
+*/}}
+{{- define "generic.podLabels" -}}
+{{ include "generic.selectorLabels" . }}
+app.kubernetes.io/version: {{ include "generic.version" . }}
 {{- end }}
 
 {{/*

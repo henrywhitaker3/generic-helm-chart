@@ -374,7 +374,7 @@ tests:
       - isSubset:
           path: .metadata.labels
           content:
-            helm.sh/chart: generic-1.3.2
+            helm.sh/chart: generic-1.16.0
             app.kubernetes.io/version: "1.16.0"
   - it: sets the app version according to the overrides
     chart:
@@ -387,7 +387,7 @@ tests:
       - isSubset:
           path: .metadata.labels
           content:
-            helm.sh/chart: generic-11.0.0
+            helm.sh/chart: generic-2.0.0
             app.kubernetes.io/version: "2.0.0"
 
   - it: doesn't include the env field when not set

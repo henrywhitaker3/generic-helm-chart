@@ -21,7 +21,7 @@ spec:
       {{- range $container := $job.containers }}
         - name: {{ $container.name }}
           image: {{ $container.image }}
-          command: 
+          command:
             {{- $container.command | toYaml | nindent 12 }}
           {{- if $container.env }}
           env:
