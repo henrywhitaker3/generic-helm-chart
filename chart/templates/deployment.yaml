@@ -1,16 +1,35 @@
+{{- $isStatefulSet := eq .Values.kind "statefulset" }}
 apiVersion: apps/v1
-kind: Deployment
+kind: {{ if $isStatefulSet }}StatefulSet{{ else }}Deployment{{ end }}
 metadata:
   name: {{ include "generic.fullname" . }}
   labels:
     {{- include "generic.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  {{- if $isStatefulSet }}
+  serviceName: {{ include "generic.fullname" . }}-peers
+  {{- else }}
   strategy:
     {{- .Values.deploymentStrategy | toYaml | nindent 4}}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "generic.selectorLabels" . | nindent 6 }}
+  {{- if and $isStatefulSet .Values.pvc.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: persistence
+        labels:
+          {{- include "generic.labels" . | nindent 10 }}
+      spec:
+        storageClassName: {{ .Values.pvc.storageClassName }}
+        accessModes:
+          {{- .Values.pvc.accessModes | toYaml | nindent 10 }}
+        resources:
+          requests:
+            storage: {{ .Values.pvc.size }}
+  {{- end }}
   template:
     metadata:
       annotations:
@@ -21,9 +40,9 @@ spec:
       labels:
         {{- include "generic.podLabels" . | nindent 8 }}
     spec:
-      {{- if or (.Values.pvc.enabled) (gt (len .Values.volumes) 0) (.Values.vpn.enabled) }}
+      {{- if or (and .Values.pvc.enabled (not $isStatefulSet)) (gt (len .Values.volumes) 0) (.Values.vpn.enabled) }}
       volumes:
-        {{- if .Values.pvc.enabled }}
+        {{- if and .Values.pvc.enabled (not $isStatefulSet) }}
         - name: persistence
           persistentVolumeClaim:
             claimName: {{ include "generic.fullname" . }}

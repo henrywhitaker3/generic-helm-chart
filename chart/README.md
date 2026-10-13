@@ -50,6 +50,7 @@ helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.5.4
 | ingress.enabled | bool | `false` | Specify whether to enable the ingress |
 | initContainers | list | `[]` | Specify any initContainer for the pod |
 | jobs | list | `[]` |  |
+| kind | string | `"deployment"` | The type of workload to deploy |
 | lifecycle | object | `{}` |  |
 | metrics | object | `{"enabled":false,"honorLabels":false,"interval":"60s","path":"/metrics","port":"http","timeout":"30s"}` | Setup ServiceMonitors for the deployment |
 | netpol | object | `{"allowCoredns":true,"egress":[],"enabled":false,"ingress":[]}` | Configure a NetworkPolicy for the app |
@@ -72,9 +73,10 @@ helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.5.4
 | secrets.enabled | bool | `false` | Specify whether to create an external-secrets item |
 | secrets.key | string | `""` | Specify the key external-secrets shoudl pull data form |
 | securityContext | object | `{}` |  |
-| service | object | `{"additionalPorts":[],"enabled":true,"loadBalancer":{"enabled":false,"externalTrafficPolicy":"Cluster","ip":""},"port":80,"portName":"http","type":"ClusterIP"}` | Configure the service |
+| service | object | `{"additionalPorts":[],"enabled":true,"headless":false,"loadBalancer":{"enabled":false,"externalTrafficPolicy":"Cluster","ip":""},"port":80,"portName":"http","type":"ClusterIP"}` | Configure the service |
 | service.additionalPorts | list | `[]` | Specify any additional ports for the service |
 | service.enabled | bool | `true` | Specifies whether or not to create a service |
+| service.headless | bool | `false` | Whether to create an additional headless service for peer discovery (always enabled for StatefulSets) |
 | service.loadBalancer | object | `{"enabled":false,"externalTrafficPolicy":"Cluster","ip":""}` | Optionally configure properties for an additional LoadBalancer service |
 | service.loadBalancer.enabled | bool | `false` | Specifies whether to create an additional service with type LoadBalancer |
 | service.loadBalancer.externalTrafficPolicy | string | `"Cluster"` | Specify the externalTrafficPolicy of the service |

@@ -181,6 +181,14 @@
         "jobs": {
             "type": "array"
         },
+        "kind": {
+            "description": "The type of workload to deploy",
+            "type": "string",
+            "enum": [
+                "deployment",
+                "statefulset"
+            ]
+        },
         "lifecycle": {
             "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.Lifecycle",
             "type": "object"
@@ -388,6 +396,10 @@
                 },
                 "enabled": {
                     "description": "Specifies whether or not to create a service",
+                    "type": "boolean"
+                },
+                "headless": {
+                    "description": "Whether to create an additional headless service for peer discovery (always enabled for StatefulSets)",
                     "type": "boolean"
                 },
                 "loadBalancer": {

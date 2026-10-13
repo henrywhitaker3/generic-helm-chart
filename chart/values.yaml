@@ -2,6 +2,10 @@
 # -- The number of replicas of the deployment
 replicaCount: 1
 
+# @schema enum:[deployment, statefulset]
+# -- The type of workload to deploy
+kind: deployment
+
 # @schema additionalProperties: false
 # -- Configure the image used by the deployment
 image:
@@ -77,6 +81,10 @@ service:
     # @schema enum:[Cluster, Local]
     # -- Specify the externalTrafficPolicy of the service
     externalTrafficPolicy: Cluster
+
+  # @schema type:[boolean]
+  # -- Whether to create an additional headless service for peer discovery (always enabled for StatefulSets)
+  headless: false
 
 # @schema additionalProperties: false
 # -- Configure probes for the deployment

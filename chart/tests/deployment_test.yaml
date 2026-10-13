@@ -12,6 +12,42 @@ tests:
       - isKind:
           of: Deployment
 
+  - it: creates a statefulset when selected
+    set:
+      kind: statefulset
+    asserts:
+      - isKind:
+          of: StatefulSet
+      - equal:
+          path: .spec.serviceName
+          value: RELEASE-NAME-peers
+      - notExists:
+          path: .spec.strategy
+
+  - it: creates a volume claim template for statefulsets when persistence is enabled
+    set:
+      kind: statefulset
+      pvc.enabled: true
+      pvc.size: 150Gi
+      pvc.storageClassName: bongo
+      pvc.accessModes:
+        - ReadWriteMany
+    asserts:
+      - equal:
+          path: .spec.volumeClaimTemplates[0].metadata.name
+          value: persistence
+      - equal:
+          path: .spec.volumeClaimTemplates[0].spec.resources.requests.storage
+          value: 150Gi
+      - equal:
+          path: .spec.volumeClaimTemplates[0].spec.storageClassName
+          value: bongo
+      - equal:
+          path: .spec.volumeClaimTemplates[0].spec.accessModes[0]
+          value: ReadWriteMany
+      - notExists:
+          path: .spec.template.spec.volumes
+
   - it: sets the image tag correctly
     set:
       image:

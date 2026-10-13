@@ -21,6 +21,14 @@ tests:
       - isKind:
           of: PersistentVolumeClaim
 
+  - it: does not create a standalone pvc for a statefulset
+    set:
+      kind: statefulset
+      pvc.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 0
+
   - it: sets the pvc size
     set:
       pvc.enabled: true

@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/refs/heads/main/schema/helm-testsuite.json
+
+suite: headless service test
+
+templates:
+  - headless_service.yaml
+
+tests:
+  - it: does not create a peer service by default
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: creates a headless peer service when configured
+    set:
+      service.headless: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-peers
+      - equal:
+          path: spec.clusterIP
+          value: None
+
+  - it: creates a headless peer service for statefulsets
+    set:
+      kind: statefulset
+    asserts:
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-peers
