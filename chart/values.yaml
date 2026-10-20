@@ -2,7 +2,7 @@
 # -- The number of replicas of the deployment
 replicaCount: 1
 
-# @schema enum:[deployment, statefulset]
+# @schema enum:[deployment, statefulset, daemonset]
 # -- The type of workload to deploy
 kind: deployment
 

@@ -1,4 +1,4 @@
-{{- if and .Values.pvc.enabled (eq .Values.kind "deployment") }}
+{{- if and .Values.pvc.enabled (ne .Values.kind "statefulset") }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

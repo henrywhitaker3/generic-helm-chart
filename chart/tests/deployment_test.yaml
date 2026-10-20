@@ -24,6 +24,19 @@ tests:
       - notExists:
           path: .spec.strategy
 
+  - it: creates a daemonset when selected
+    set:
+      kind: daemonset
+    asserts:
+      - isKind:
+          of: DaemonSet
+      - notExists:
+          path: .spec.replicas
+      - notExists:
+          path: .spec.strategy
+      - notExists:
+          path: .spec.serviceName
+
   - it: creates a volume claim template for statefulsets when persistence is enabled
     set:
       kind: statefulset

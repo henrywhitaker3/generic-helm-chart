@@ -186,7 +186,8 @@
             "type": "string",
             "enum": [
                 "deployment",
-                "statefulset"
+                "statefulset",
+                "daemonset"
             ]
         },
         "lifecycle": {

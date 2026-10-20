@@ -1,15 +1,18 @@
 {{- $isStatefulSet := eq .Values.kind "statefulset" }}
+{{- $isDaemonSet := eq .Values.kind "daemonset" }}
 apiVersion: apps/v1
-kind: {{ if $isStatefulSet }}StatefulSet{{ else }}Deployment{{ end }}
+kind: {{ if $isStatefulSet }}StatefulSet{{ else if $isDaemonSet }}DaemonSet{{ else }}Deployment{{ end }}
 metadata:
   name: {{ include "generic.fullname" . }}
   labels:
     {{- include "generic.labels" . | nindent 4 }}
 spec:
+  {{- if not $isDaemonSet }}
   replicas: {{ .Values.replicaCount }}
+  {{- end }}
   {{- if $isStatefulSet }}
   serviceName: {{ include "generic.fullname" . }}-peers
-  {{- else }}
+  {{- else if not $isDaemonSet }}
   strategy:
     {{- .Values.deploymentStrategy | toYaml | nindent 4}}
   {{- end }}

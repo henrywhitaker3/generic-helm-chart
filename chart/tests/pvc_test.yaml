@@ -29,6 +29,14 @@ tests:
       - hasDocuments:
           count: 0
 
+  - it: creates a standalone pvc for a daemonset
+    set:
+      kind: daemonset
+      pvc.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+
   - it: sets the pvc size
     set:
       pvc.enabled: true
