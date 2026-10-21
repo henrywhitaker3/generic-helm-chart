@@ -38,7 +38,7 @@ Common labels
 {{- define "generic.labels" -}}
 helm.sh/chart: {{ .Chart.Version }}
 {{ include "generic.selectorLabels" . }}
-app.kubernetes.io/version: {{ include "generic.version" . }}
+app.kubernetes.io/version: {{ include "generic.version" . | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
@@ -47,7 +47,7 @@ Labels that pods get
 */}}
 {{- define "generic.podLabels" -}}
 {{ include "generic.selectorLabels" . }}
-app.kubernetes.io/version: {{ include "generic.version" . }}
+app.kubernetes.io/version: {{ include "generic.version" . | quote }}
 {{- end }}
 
 {{/*
