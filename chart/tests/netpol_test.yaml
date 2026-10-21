@@ -84,3 +84,39 @@ tests:
       - equal:
           path: spec.egress[0].to[0].podSelector.matchLabels.bongo
           value: bingo
+
+  - it: generates a CiliumNetworkPolicy with Cilium rules
+    set:
+      netpol:
+        enabled: true
+        kind: cilium
+        allowCoredns: true
+        ciliumIngress:
+          - fromEndpoints:
+              - matchLabels:
+                  k8s:app.kubernetes.io/name: frontend
+        ciliumEgress:
+          - toEntities:
+              - world
+    asserts:
+      - equal:
+          path: apiVersion
+          value: cilium.io/v2
+      - equal:
+          path: kind
+          value: CiliumNetworkPolicy
+      - equal:
+          path: spec.endpointSelector.matchLabels["app.kubernetes.io/name"]
+          value: RELEASE-NAME
+      - equal:
+          path: spec.ingress[0].fromEndpoints[0].matchLabels["k8s:app.kubernetes.io/name"]
+          value: frontend
+      - equal:
+          path: spec.egress[0].toEndpoints[0].matchLabels["k8s:io.kubernetes.pod.namespace"]
+          value: kube-system
+      - equal:
+          path: spec.egress[0].toPorts[0].ports[0].port
+          value: "53"
+      - equal:
+          path: spec.egress[1].toEntities[0]
+          value: world

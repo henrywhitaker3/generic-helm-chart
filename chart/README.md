@@ -53,8 +53,11 @@ helm install example oci://ghcr.io/henrywhitaker3/generic --version 1.6.1
 | kind | string | `"deployment"` | The type of workload to deploy |
 | lifecycle | object | `{}` |  |
 | metrics | object | `{"enabled":false,"honorLabels":false,"interval":"60s","path":"/metrics","port":"http","timeout":"30s"}` | Setup ServiceMonitors for the deployment |
-| netpol | object | `{"allowCoredns":true,"egress":[],"enabled":false,"ingress":[]}` | Configure a NetworkPolicy for the app |
+| netpol | object | `{"allowCoredns":true,"ciliumEgress":[],"ciliumIngress":[],"egress":[],"enabled":false,"ingress":[],"kind":"standard"}` | Configure a NetworkPolicy for the app |
 | netpol.allowCoredns | bool | `true` | When true, automatically adds an egress rule to kube-system coredns pods |
+| netpol.ciliumEgress | list | `[]` | Cilium egress rules to apply when `kind` is `cilium` |
+| netpol.ciliumIngress | list | `[]` | Cilium ingress rules to apply when `kind` is `cilium` |
+| netpol.kind | string | `"standard"` | The kind of netpol to configure |
 | nodeSelector | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |

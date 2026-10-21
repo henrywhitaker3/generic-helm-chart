@@ -1,4 +1,4 @@
-{{- if .Values.netpol.enabled }}
+{{- if and .Values.netpol.enabled (eq .Values.netpol.kind "standard") }}
 {{- $hasIngress := (gt (len .Values.netpol.ingress) 0) }}
 {{- $hasEgress := (or (.Values.netpol.allowCoredns) (gt (len .Values.netpol.egress) 0)) }}
 {{- $policyTypes := list }}
@@ -46,6 +46,45 @@ spec:
           protocol: TCP
     {{- end }}
     {{- with .Values.netpol.egress }}
+    {{- . | toYaml | nindent 4 }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- if and .Values.netpol.enabled (eq .Values.netpol.kind "cilium") }}
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/henrywhitaker3/crds/refs/heads/main/schemas/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ include "generic.fullname" . }}
+  labels:
+    {{- include "generic.labels" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- include "generic.selectorLabels" . | nindent 6 }}
+  {{- with .Values.netpol.ciliumIngress }}
+  ingress:
+    {{- . | toYaml | nindent 4 }}
+  {{- end }}
+  {{- if or .Values.netpol.allowCoredns (gt (len .Values.netpol.ciliumEgress) 0) }}
+  egress:
+    {{- if .Values.netpol.allowCoredns }}
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s:app.kubernetes.io/name: coredns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+          rules:
+            dns:
+            - matchPattern: "*"
+    {{- end }}
+    {{- with .Values.netpol.ciliumEgress }}
     {{- . | toYaml | nindent 4 }}
     {{- end }}
   {{- end }}

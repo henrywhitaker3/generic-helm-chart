@@ -331,6 +331,10 @@ vpn:
 netpol:
   enabled: false
 
+  # @schema enum:[standard, cilium]
+  # -- The kind of netpol to configure
+  kind: standard
+
   # @schema
   # -- When true, automatically adds an egress rule to kube-system coredns pods
   allowCoredns: true
@@ -340,3 +344,11 @@ netpol:
 
   # @schema itemRef: $k8s/_definitions.json#/definitions/io.k8s.api.networking.v1.NetworkPolicySpec/properties/egress/items
   egress: []
+
+  # @schema itemRef: https://raw.githubusercontent.com/henrywhitaker3/crds/refs/heads/main/schemas/cilium.io/ciliumnetworkpolicy_v2.json#/properties/spec/properties/ingress/items
+  # -- Cilium ingress rules to apply when `kind` is `cilium`
+  ciliumIngress: []
+
+  # @schema itemRef: https://raw.githubusercontent.com/henrywhitaker3/crds/refs/heads/main/schemas/cilium.io/ciliumnetworkpolicy_v2.json#/properties/spec/properties/egress/items
+  # -- Cilium egress rules to apply when `kind` is `cilium`
+  ciliumEgress: []
