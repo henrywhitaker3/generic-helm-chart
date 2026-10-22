@@ -1,4 +1,4 @@
-# @schema type:[integer];minimum: 1
+# @schema type:[integer];minimum: 0
 # -- The number of replicas of the deployment
 replicaCount: 1
 
